@@ -1,14 +1,13 @@
-
-export default function Page() {
+// app/page.tsx
+export default function Home() {
   return (
-    <>
-      <div className="mx-auto flex max-w-sm items-center gap-x-4 rounded-xl bg-white p-6 shadow-lg outline outline-black/5 dark:bg-slate-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10">
-      <img className="size-12 shrink-0" src="/img/logo.svg" alt="ChitChat Logo" />
-      <div>
-        <div className="text-xl font-medium text-black dark:text-red">ChitChat</div>
-        <p className="text-gray-500 dark:text-gray-400">You have a new message!</p>
+    <main className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-8">
+      <h1 className="text-4xl font-bold mb-4">Welcome to the Home Page!</h1>
+      <p className="text-lg text-gray-700">Scroll down to see the fixed navbar in action.</p>
+      {/* Add some dummy content to make the page scrollable */}
+      <div className="mt-16 h-[1000px] bg-white w-full max-w-2xl rounded-lg shadow-md flex items-center justify-center">
+        <p className="text-xl text-gray-600">Scrollable Content Area</p>
       </div>
-    </div>
-    </>
+    </main>
   )
 }
