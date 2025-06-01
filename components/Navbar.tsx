@@ -3,6 +3,10 @@
 
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
+import ProductLogoSvg from '../public/assets/navbar/product-box.svg'; 
+import TrendingUpLogoSvg from '../public/assets/navbar/trending-up.svg';
+import BookOpenLogoSvg from '../public/assets/navbar/book-open-check.svg';
+import FileBarLogoSvg from '../public/assets/navbar/file-bar-chart.svg';
 
 // You might need to install react-icons:
 // npm install react-icons
@@ -59,24 +63,24 @@ export default function Navbar() {
           {/* Left side (e.g., Logo/Brand) - Adjust as needed */}
           <div className="flex-shrink-0">
             <Link href="/" className="text-xl font-bold">
-              Your Logo
+              Djong Pinisi
             </Link>
           </div>
 
           {/* Center (Navigation Links) */}
           <div className="flex-grow flex justify-center"> {/* flex-grow to take available space */}
             <div className="flex space-x-4">
-              <Link href="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
-                Dashboard
+              <Link href="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+                <TrendingUpLogoSvg className="h-6 w-4 mr-2" /> Dashboard
               </Link>
-              <Link href="/about" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
-                Product
+              <Link href="/about" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+                <ProductLogoSvg className="h-4 w-4 mr-2" />Product
               </Link>
-              <Link href="/services" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
-                Booking
+              <Link href="/services" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+                <BookOpenLogoSvg className="h-6 w-6 mr-2" /> Booking
               </Link>
-              <Link href="/contact" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
-                Report
+              <Link href="/contact" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+                <FileBarLogoSvg className="h-6 w-6 mr-2" /> Report
               </Link>
             </div>
           </div>
