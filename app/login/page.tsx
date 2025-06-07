@@ -53,7 +53,7 @@ export default function LoginPage() {
       {/* Left Half: Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 relative z-10">
         <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md border border-gray-200"> {/* White background, lighter border */}
-          <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Login</h2> {/* Darker text for white theme */}
+          <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Djong Pinisi</h2> {/* Darker text for white theme */}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
