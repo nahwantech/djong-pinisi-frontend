@@ -1,12 +1,12 @@
-// components/Navbar.tsx
+// components/navbar/Navbar.tsx
 'use client'; // This directive is necessary for client-side interactivity in App Router
 
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
-import ProductLogoSvg from '../public/assets/navbar/product-box.svg'; 
-import TrendingUpLogoSvg from '../public/assets/navbar/trending-up.svg';
-import BookOpenLogoSvg from '../public/assets/navbar/book-open-check.svg';
-import FileBarLogoSvg from '../public/assets/navbar/file-bar-chart.svg';
+import ProductLogoSvg from '../../public/assets/navbar/product-box.svg'; 
+import TrendingUpLogoSvg from '../../public/assets/navbar/trending-up.svg';
+import BookOpenLogoSvg from '../../public/assets/navbar/book-open-check.svg';
+import FileBarLogoSvg from '../../public/assets/navbar/file-bar-chart.svg';
 
 // You might need to install react-icons:
 // npm install react-icons
@@ -73,13 +73,13 @@ export default function Navbar() {
               <Link href="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
                 <TrendingUpLogoSvg className="h-6 w-4 mr-2" /> Dashboard
               </Link>
-              <Link href="/about" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+              <Link href="/product" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
                 <ProductLogoSvg className="h-4 w-4 mr-2" />Product
               </Link>
-              <Link href="/services" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+              <Link href="/booking" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
                 <BookOpenLogoSvg className="h-6 w-6 mr-2" /> Booking
               </Link>
-              <Link href="/contact" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+              <Link href="/report" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
                 <FileBarLogoSvg className="h-6 w-6 mr-2" /> Report
               </Link>
             </div>
