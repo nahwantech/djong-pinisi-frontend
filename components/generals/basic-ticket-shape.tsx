@@ -1,12 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import DatePicker from 'react-datepicker'
+import { Datepicker } from 'flowbite-react';
 
 export default function Ticket() {
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+    
+
     return (
-      <div className="relative w-full bg-gray-200 rounded-xl overflow-hidden">
+      <div className="w-full bg-gray-200 rounded-xl overflow-visible">
         {/* Top Section */}
         <div className="p-5">
             <div className="mb-2 mt-2">
@@ -18,7 +19,7 @@ export default function Ticket() {
                   id="traveler-name"
                   className="mt-1 block w-full rounded-md border bg-white border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
                 />
-            </div>
+            </div>            
         </div>
   
         {/* Middle Divider with Cutouts and Dashed Line */}
@@ -55,16 +56,13 @@ export default function Ticket() {
                 />
             </div>
 
-            
-            {/* <div className="max-w-sm mx-auto p-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Pick a date</label>
-              <DatePicker
-                selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
-                dateFormat="yyyy-MM-dd"
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>   */}
+            <div className="mb-2 mt-2 relative w-full">
+              <label htmlFor="date-of-birth" className="block text-sm font-medium text-gray-700">
+                  Date of birth
+              </label>
+              <Datepicker id="date-of-birth" className="" />
+            </div>          
+           
         </div>
 
         
