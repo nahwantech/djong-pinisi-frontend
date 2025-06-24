@@ -5,7 +5,6 @@ import { Datepicker } from 'flowbite-react';
 
 export default function Ticket() {
     
-
     return (
       <div className="w-full bg-gray-200 rounded-xl overflow-visible">
         {/* Top Section */}
