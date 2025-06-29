@@ -1,5 +1,8 @@
 // components/booking/PicInfo.tsx
-'use client'; // This directive is necessary for client-side interactivity in App Router
+'use client';
+import PrimaryButton from "../generals/btns/primary-button";
+
+ // This directive is necessary for client-side interactivity in App Router
 
 export default function PicInfo() {
 
@@ -63,18 +66,17 @@ export default function PicInfo() {
                     </div>
 
                     <div className="mb-2 mt-2 flex flex-row">
-                        <button
-                            type="submit"
-                            className="w-full bg-blue-600 text-white font-medium m-1 rounded-md hover:bg-blue-700 transition"
-                        >
-                            Save
-                        </button>
-                        <button
-                            type="submit"
-                            className="w-full bg-blue-600 text-white font-medium m-1 rounded-md hover:bg-blue-700 transition"
-                        >
-                            Reset
-                        </button>
+                        <div className="mr-2">
+                            <PrimaryButton
+                                ButtonDesc="Save"
+                            />
+                        </div>
+                        
+                        <div className="mr-2">
+                            <PrimaryButton
+                                ButtonDesc="Reset"
+                            />
+                        </div>
                     </div>
                 </form>
             </div>
