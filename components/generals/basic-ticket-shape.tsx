@@ -2,7 +2,15 @@
 
 import { Datepicker } from 'flowbite-react';
 
-export default function Ticket({ travelerNo, paxType }: { travelerNo: number, paxType: string }) {
+export default function Ticket({ 
+  travelerNo, 
+  paxType,
+  travelerName,
+}:{ 
+  travelerNo: number, 
+  paxType: string,
+  travelerName: string,
+}) {
     
     return (
       <div className="w-full bg-gray-200 rounded-xl overflow-visible">
@@ -15,6 +23,7 @@ export default function Ticket({ travelerNo, paxType }: { travelerNo: number, pa
                 <input
                   type="traveler-name"
                   id="traveler-name"
+                  value={travelerName}
                   className="mt-1 block w-full rounded-md border bg-white border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
                 />
             </div>            

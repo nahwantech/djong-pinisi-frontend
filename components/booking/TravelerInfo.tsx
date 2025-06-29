@@ -51,11 +51,12 @@ export default function TravelerInfo({
                 ...Array(infQty).fill("infant"),
             ];
 
-            return paxTypes.map((type, index) => (
-                <div key={index} className="mt-2 mb-2">
+            return Array.from({ length: totalTicket }, (_, i) => (
+                <div key={i} className="mt-2 mb-2">
                     <Ticket 
-                        travelerNo={index + 1} 
-                        paxType={type} 
+                        travelerNo={i+1}
+                        paxType={paxTypes[i]}
+                        travelerName=""
                     />
                 </div>
             ));
