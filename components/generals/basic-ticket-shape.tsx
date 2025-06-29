@@ -1,9 +1,8 @@
 'use client'
 
-import { useState } from 'react'
 import { Datepicker } from 'flowbite-react';
 
-export default function Ticket() {
+export default function Ticket({ travelerNo, paxType }: { travelerNo: number, paxType: string }) {
     
     return (
       <div className="w-full bg-gray-200 rounded-xl overflow-visible">
@@ -11,7 +10,7 @@ export default function Ticket() {
         <div className="p-5">
             <div className="mb-2 mt-2">
                 <label htmlFor="traveler-name" className="block text-sm font-medium text-gray-700">
-                  Traveler Name 1
+                  Traveler #{`${travelerNo}`} - {paxType}
                 </label>
                 <input
                   type="traveler-name"
