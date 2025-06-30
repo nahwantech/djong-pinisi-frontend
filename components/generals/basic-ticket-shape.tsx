@@ -5,11 +5,18 @@ import { Datepicker } from 'flowbite-react';
 export default function Ticket({ 
   travelerNo, 
   paxType,
-  travelerName,
+  formData,
+  onChange,
 }:{ 
-  travelerNo: number, 
-  paxType: string,
-  travelerName: string,
+  travelerNo: number
+  paxType: string
+  formData: {
+    travelerName: string
+    passportNo: string
+    email: string
+    dateOfBirth: Date
+  }
+  onChange: (field: string, value: any) => void
 }) {
     
     return (
@@ -17,13 +24,14 @@ export default function Ticket({
         {/* Top Section */}
         <div className="p-5">
             <div className="mb-2 mt-2">
-                <label htmlFor="traveler-name" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="travelerName" className="block text-sm font-medium text-gray-700">
                   Traveler #{`${travelerNo}`} - {paxType}
                 </label>
                 <input
-                  type="traveler-name"
-                  id="traveler-name"
-                  value={travelerName}
+                  type="text"
+                  id="travelerName"
+                  value={formData.travelerName}
+                  onChange={(e) => onChange('travelerName', e.target.value)}
                   className="mt-1 block w-full rounded-md border bg-white border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
                 />
             </div>            
@@ -42,23 +50,28 @@ export default function Ticket({
         {/* Bottom Section */}
         <div className="p-5">
             <div className="mb-2 mt-2">
-                <label htmlFor="passport-no" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="passportNo" className="block text-sm font-medium text-gray-700">
                   Passport No
                 </label>
                 <input
-                  type="passport-no"
-                  id="passport-no"
+                  type="text"
+                  id="passportNo"
+                  value={formData.passportNo}
+                  onChange={(e) => onChange('passportNo', e.target.value)}
                   className="mt-1 block w-full rounded-md border bg-white border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
                 />
             </div>
 
             <div className="mb-2 mt-2">
-                <label htmlFor="passport-no" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   Traveller Email
                 </label>
                 <input
-                  type="passport-no"
-                  id="passport-no"
+                  type="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={(e) => onChange('email', e.target.value)}
+                  placeholder='Email'
                   className="mt-1 block w-full rounded-md border bg-white border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
                 />
             </div>
@@ -67,7 +80,13 @@ export default function Ticket({
               <label htmlFor="date-of-birth" className="block text-sm font-medium text-gray-700">
                   Date of birth
               </label>
-              <Datepicker id="date-of-birth" className="" />
+              <Datepicker 
+                id="dateOfBirth"
+                value={formData.dateOfBirth}
+                onChange={(date: Date) =>
+                  onChange('dateOfBirth', date.toISOString().split('T')[0])
+                }
+              />
             </div>          
            
         </div>

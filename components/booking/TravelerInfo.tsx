@@ -15,18 +15,27 @@ export default function TravelerInfo({
     setInfQty,
     totalForm, 
     setTotalForm,
+    formData,
+    onChange,
 }:{
-    handleDecrement: any,
-    handleInputChange: any,
-    handleIncrement: any,
-    adultQty: number,
-    childQty: number,
-    infQty: number,
-    setAdultQty: any,
-    setChildQty: any,
-    setInfQty: any,
-    totalForm: number, 
-    setTotalForm: any,
+    handleDecrement: any
+    handleInputChange: any
+    handleIncrement: any
+    adultQty: number
+    childQty: number
+    infQty: number
+    setAdultQty: any
+    setChildQty: any
+    setInfQty: any
+    totalForm: number
+    setTotalForm: any
+    formData: {
+        travelerName: string
+        passportNo: string
+        email: string
+        dateOfBirth: Date
+    }
+    onChange: (field: string, value: any) => void
 }) {
 
 
@@ -56,7 +65,8 @@ export default function TravelerInfo({
                     <Ticket 
                         travelerNo={i+1}
                         paxType={paxTypes[i]}
-                        travelerName=""
+                        onChange={onChange}
+                        formData={formData}
                     />
                 </div>
             ));

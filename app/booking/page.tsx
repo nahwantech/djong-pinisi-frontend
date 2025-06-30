@@ -11,6 +11,23 @@ export default function Booking() {
   const [childQty, setChildQty] = useState(0);
   const [infQty, setInfQty] = useState(0);
   const [totalForm, setTotalForm] = useState(0);
+  const [travelers, setTravelers] = useState(
+    Array.from({ length: totalForm }, () => ({
+      travelerName: '',
+      passportNo: '',
+      email: '',
+      dateOfBirth: '',
+    }))
+  )
+
+  // handle traveller change
+  const handleTravelerChange = (index: number, field: string, value: any) => {
+    setTravelers((prev) => {
+      const updated = [...prev]
+      updated[index][field] = value
+      return updated
+    })
+  }
 
   // Generic decrement function
   const handleDecrement = (
