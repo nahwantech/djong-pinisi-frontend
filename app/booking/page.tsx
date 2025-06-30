@@ -20,6 +20,13 @@ export default function Booking() {
     }))
   )
 
+  const [formData, setFormData] = useState({
+    travelerName:  '',
+    passportNo: '',
+    email: '',
+    dateOfBirth: new Date(),
+  })
+
   // handle traveller change
   const handleTravelerChange = (index: number, field: string, value: any) => {
     setTravelers((prev) => {
@@ -60,23 +67,27 @@ export default function Booking() {
   };
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-8">
-      {/* Add some dummy content to make the page scrollable */}
-      <PicInfo />
+        {/* Traveller Info */}
+        <TravelerInfo 
+            adultQty={adultQty}
+            childQty={childQty}
+            infQty={infQty}
+            handleDecrement={handleDecrement}
+            handleIncrement={handleIncrement}
+            handleInputChange={handleInputChange}
+            setAdultQty={setAdultQty}
+            setChildQty={setChildQty}
+            setInfQty={setInfQty}
+            totalForm={totalForm} 
+            setTotalForm={setTotalForm}
+            formData={formData}
+            onChange={() => handleInputChange}
+        />
 
-      {/* Traveller Info */}
-      <TravelerInfo 
-        adultQty={adultQty}
-        childQty={childQty}
-        infQty={infQty}
-        handleDecrement={handleDecrement}
-        handleIncrement={handleIncrement}
-        handleInputChange={handleInputChange}
-        setAdultQty={setAdultQty}
-        setChildQty={setChildQty}
-        setInfQty={setInfQty}
-        totalForm={totalForm} 
-        setTotalForm={setTotalForm}
-      />
+        {/* Add some dummy content to make the page scrollable */}
+        <PicInfo />
+
+      
     </main>
   )
 }

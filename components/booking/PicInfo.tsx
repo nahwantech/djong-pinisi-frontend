@@ -69,12 +69,14 @@ export default function PicInfo() {
                         <div className="mr-2">
                             <PrimaryButton
                                 ButtonDesc="Save"
+                                onClick={() => console.log("hello")}
                             />
                         </div>
                         
                         <div className="mr-2">
                             <PrimaryButton
                                 ButtonDesc="Reset"
+                                onClick={() => console.log("hello")}
                             />
                         </div>
                     </div>
