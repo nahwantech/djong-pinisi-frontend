@@ -95,7 +95,7 @@ export default function TotalPax({
 
         <div className='ml-2 mr-2 '>
           <div className='max-w-[20rem]'>
-            <label className="block text-sm font-medium text-gray-700">Select Region</label>
+            <label className="block text-sm font-medium text-gray-700">Select Destination</label>
             <Select
               options={options}
               isMulti
