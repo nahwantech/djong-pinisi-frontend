@@ -31,6 +31,21 @@ const nextConfig = {
     return config;
   },
   devIndicators: false, 
+  images: {
+        unoptimized: true,
+        remotePatterns: [
+            {
+                protocol: 'http', // Use 'http' if your image uses http, not https
+                hostname: '91.108.104.69',
+                pathname: '/media/**'
+            },
+            {
+                protocol: 'https', // Use 'http' if your image uses http, not https
+                hostname: 'picsum.photos',
+                pathname: '/'
+            },
+        ],
+    },
 };
 
 module.exports = withFlowbiteReact(nextConfig);

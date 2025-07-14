@@ -3,6 +3,7 @@
 import PicInfo from "../../components/booking/PicInfo";
 import TravelerInfo from "../../components/booking/TravelerInfo";
 import { useState } from 'react';
+import PackageTourList from "../../components/package-tours/PackageTourList";
 
 // app/booking/page.tsx
 export default function Booking() {
@@ -86,6 +87,9 @@ export default function Booking() {
 
         {/* Add some dummy content to make the page scrollable */}
         <PicInfo />
+
+        {/* Package Tour Card */}
+        <PackageTourList />
 
       
     </main>
