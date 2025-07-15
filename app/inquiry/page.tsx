@@ -68,25 +68,10 @@ export default function Booking() {
   };
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-8">
-        {/* Traveller Info */}
-        <TravelerInfo 
-            adultQty={adultQty}
-            childQty={childQty}
-            infQty={infQty}
-            handleDecrement={handleDecrement}
-            handleIncrement={handleIncrement}
-            handleInputChange={handleInputChange}
-            setAdultQty={setAdultQty}
-            setChildQty={setChildQty}
-            setInfQty={setInfQty}
-            totalForm={totalForm} 
-            setTotalForm={setTotalForm}
-            formData={formData}
-            onChange={() => handleInputChange}
-        />
+        {/* Package Tour Card */}
+        <PackageTourList />
 
-        {/* Add some dummy content to make the page scrollable */}
-        <PicInfo />
+      
     </main>
   )
 }
