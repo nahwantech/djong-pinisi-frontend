@@ -73,6 +73,9 @@ export default function Navbar() {
               <Link href="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
                 <TrendingUpLogoSvg className="h-6 w-4 mr-2" /> Dashboard
               </Link>
+              <Link href="/sales-pipeline" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+                <BookOpenLogoSvg className="h-6 w-6 mr-2" /> Sales Pipeline
+              </Link>
               <Link href="/inquiry" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
                 <BookOpenLogoSvg className="h-6 w-6 mr-2" /> Inquiry
               </Link>
