@@ -1,4 +1,5 @@
 import React from 'react';
+import GeneralFunction from '../generals/gengeral-function';
 
 export interface SalesPipelineCardProps {
   lead: {
@@ -17,6 +18,9 @@ export interface SalesPipelineCardProps {
 }
 
 const SalesPipelineCard: React.FC<SalesPipelineCardProps> = ({ lead, onClick }) => {
+
+  const gf = new GeneralFunction();
+  
   const getStageColor = (stage: string) => {
     switch (stage) {
       case 'Initial Contact':
@@ -50,8 +54,8 @@ const SalesPipelineCard: React.FC<SalesPipelineCardProps> = ({ lead, onClick }) 
           {lead.stage}
         </div>
         <div className="ml-4 text-right">
-          <p className="text-lg font-bold text-gray-800">${lead.value.toLocaleString()}</p>
-          <p className="text-xs text-gray-500">Est. Close: {lead.closeDate}</p>
+          <p className="text-lg font-bold text-gray-800">IDR {lead.value.toLocaleString()}</p>
+          <p className="text-xs text-gray-500">Est. Close: {gf.formatDateTime(new Date(lead.closeDate))}</p>
         </div>
       </div>
     </div>
