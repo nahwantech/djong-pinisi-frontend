@@ -8,10 +8,12 @@ export interface SalesPipelineCardProps {
     company: string;
     stage: 'Initial Contact' | 'Qualification' | 'Proposal' | 'Negotiation' | 'Closed Won' | 'Closed Lost';
     value: number;
-    closeDate: string;
+    closeDate?: string;
+    comment: string;
     history: {
       stage: string;
       date: string;
+      comment: string;
     }[];
   };
   onClick: () => void;

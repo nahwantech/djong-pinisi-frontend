@@ -104,15 +104,19 @@ const SalesPipelineDetailModal: React.FC<SalesPipelineDetailModalProps> = ({ lea
             <div className="relative">
               <div className="border-l-2 border-gray-200 absolute h-full left-4"></div>
               {lead.history.map((item, index) => (
-                <div key={index} className="flex items-center mb-4">
-                  <div className="bg-blue-500 rounded-full h-8 w-8 flex items-center justify-center text-white z-10">
-                    {index + 1}
+                <>
+                  <div key={index} className="flex items-center mb-4">
+                    <div className="bg-blue-500 rounded-full h-8 w-8 flex items-center justify-center text-white z-10">
+                      {index + 1}
+                    </div>
+                    <div className="ml-4">
+                      <p className="font-semibold">{item.stage}</p>
+                      <p className="text-sm text-gray-600">{gf.formatDateTime(new Date(item.date))}</p>
+                    </div>
                   </div>
-                  <div className="ml-4">
-                    <p className="font-semibold">{item.stage}</p>
-                    <p className="text-sm text-gray-600">{gf.formatDateTime(new Date(item.date))}</p>
-                  </div>
-                </div>
+                  <p className="ml-12 mb-6 text-gray-700"><b>Details : </b>{item.comment}</p>
+                </>
+                
               ))}
             </div>
           </div>

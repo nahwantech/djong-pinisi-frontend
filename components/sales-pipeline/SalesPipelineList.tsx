@@ -14,10 +14,11 @@ const salesData: SalesPipelineCardProps['lead'][] = [
     stage: 'Proposal',
     value: 50000,
     closeDate: '2024-08-15T14:30:45',
+    comment: 'Looking forward to the proposal review.',
     history: [
-      { stage: 'Initial Contact', date: '2024-06-01T09:15:30' },
-      { stage: 'Qualification', date: '2024-06-15T11:45:10' },
-      { stage: 'Proposal', date: '2024-07-01T16:20:05' },
+      { stage: 'Initial Contact', date: '2024-06-01T09:15:30', comment: 'Reached out via email.' },
+      { stage: 'Qualification', date: '2024-06-15T11:45:10', comment: 'Qualified lead after initial call.' },
+      { stage: 'Proposal', date: '2024-07-01T16:20:05', comment: 'Sent proposal, awaiting feedback.' },
     ],
   },
   {
@@ -27,9 +28,10 @@ const salesData: SalesPipelineCardProps['lead'][] = [
     stage: 'Qualification',
     value: 75000,
     closeDate: '2024-09-01T10:05:55',
+    comment: 'Awaiting feedback on the initial proposal.',
     history: [
-      { stage: 'Initial Contact', date: '2024-07-10T08:40:12' },
-      { stage: 'Qualification', date: '2024-07-20T15:22:35' },
+      { stage: 'Initial Contact', date: '2024-07-10T08:40:12', comment: 'Introductory meeting scheduled.' },
+      { stage: 'Qualification', date: '2024-07-20T15:22:35', comment: 'Lead qualified, needs proposal.' },
     ],
   },
   {
@@ -39,12 +41,13 @@ const salesData: SalesPipelineCardProps['lead'][] = [
     stage: 'Closed Won',
     value: 120000,
     closeDate: '2024-07-20T18:10:50',
+    comment: 'Successfully closed the deal.',
     history: [
-      { stage: 'Initial Contact', date: '2024-05-01T07:55:20' },
-      { stage: 'Qualification', date: '2024-05-15T13:30:45' },
-      { stage: 'Proposal', date: '2024-06-01T09:20:00' },
-      { stage: 'Negotiation', date: '2024-06-20T14:50:10' },
-      { stage: 'Closed Won', date: '2024-07-20T18:10:50' },
+      { stage: 'Initial Contact', date: '2024-05-01T07:55:20', comment: 'Cold call, positive response.' },
+      { stage: 'Qualification', date: '2024-05-15T13:30:45', comment: 'Lead qualified, high potential.' },
+      { stage: 'Proposal', date: '2024-06-01T09:20:00', comment: 'Proposal sent, awaiting decision.' },
+      { stage: 'Negotiation', date: '2024-06-20T14:50:10', comment: 'Negotiated terms and pricing.' },
+      { stage: 'Closed Won', date: '2024-07-20T18:10:50', comment: 'Deal signed and closed.' },
     ],
   },
   {
@@ -54,11 +57,12 @@ const salesData: SalesPipelineCardProps['lead'][] = [
     stage: 'Negotiation',
     value: 95000,
     closeDate: '2024-08-25T12:45:30',
+    comment: 'Negotiating terms before finalizing the deal.',
     history: [
-      { stage: 'Initial Contact', date: '2024-06-10T09:00:05' },
-      { stage: 'Qualification', date: '2024-06-25T11:30:25' },
-      { stage: 'Proposal', date: '2024-07-10T14:20:40' },
-      { stage: 'Negotiation', date: '2024-07-25T17:35:50' },
+      { stage: 'Initial Contact', date: '2024-06-10T09:00:05', comment: 'Contacted via referral.' },
+      { stage: 'Qualification', date: '2024-06-25T11:30:25', comment: 'Qualified after needs analysis.' },
+      { stage: 'Proposal', date: '2024-07-10T14:20:40', comment: 'Proposal sent, under review.' },
+      { stage: 'Negotiation', date: '2024-07-25T17:35:50', comment: 'Negotiating contract details.' },
     ],
   },
   {
@@ -68,8 +72,9 @@ const salesData: SalesPipelineCardProps['lead'][] = [
     stage: 'Initial Contact',
     value: 30000,
     closeDate: '2024-09-10T16:20:15',
+    comment: 'Just started the conversation.',
     history: [
-      { stage: 'Initial Contact', date: '2024-07-15T08:50:35' },
+      { stage: 'Initial Contact', date: '2024-07-15T08:50:35', comment: 'First meeting scheduled.' },
     ],
   },
   {
@@ -79,11 +84,12 @@ const salesData: SalesPipelineCardProps['lead'][] = [
     stage: 'Closed Lost',
     value: 60000,
     closeDate: '2024-07-30T19:55:00',
+    comment: 'Unfortunately, the deal did not go through.',
     history: [
-      { stage: 'Initial Contact', date: '2024-06-05T09:40:45' },
-      { stage: 'Qualification', date: '2024-06-20T10:25:20' },
-      { stage: 'Proposal', date: '2024-07-05T13:15:10' },
-      { stage: 'Closed Lost', date: '2024-07-30T19:55:00' },
+      { stage: 'Initial Contact', date: '2024-06-05T09:40:45', comment: 'Initial call, interest shown.' },
+      { stage: 'Qualification', date: '2024-06-20T10:25:20', comment: 'Qualified, but budget concerns.' },
+      { stage: 'Proposal', date: '2024-07-05T13:15:10', comment: 'Proposal sent, awaiting approval.' },
+      { stage: 'Closed Lost', date: '2024-07-30T19:55:00', comment: 'Client chose competitor.' },
     ],
   },
 ];
