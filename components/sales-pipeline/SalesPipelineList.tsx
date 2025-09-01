@@ -5,6 +5,7 @@ import SalesPipelineCard, { SalesPipelineCardProps } from './SalesPipelineCard';
 import SalesPipelineControls from './SalesPipelineControls';
 import Pagination from '../generals/Pagination';
 import SalesPipelineDetailModal from './SalesPipelineDetailModal';
+import SalesPipelineInputModal from './SalesPipelineInputModal';
 
 const salesData: SalesPipelineCardProps['lead'][] = [
   {
@@ -102,6 +103,7 @@ const SalesPipelineList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const [selectedLead, setSelectedLead] = useState<SalesPipelineCardProps['lead'] | null>(null);
+  const [isInputModalOpen, setIsInputModalOpen] = useState(false);
 
   const filteredAndSortedData = useMemo(() => {
     let filteredData = salesData;
@@ -152,7 +154,25 @@ const SalesPipelineList: React.FC = () => {
           setCurrentPage(1);
         }}
         onSort={setSortOrder}
+        openInputModal={() => setIsInputModalOpen(true)}
       />
+      
+      {/* Input Modal */}
+      {isInputModalOpen && (
+        <SalesPipelineInputModal onClose={() => setIsInputModalOpen(false)} lead={{
+          id: 0,
+          name: '',
+          company: '',
+          stage: 'Initial Contact',
+          value: 0,
+          closeDate: '',
+          comment: '',
+          history: []
+        }} />
+      )}
+      
+      
+      
       {paginatedData.map((lead) => (
         <SalesPipelineCard key={lead.id} lead={lead} onClick={() => setSelectedLead(lead)} />
       ))}

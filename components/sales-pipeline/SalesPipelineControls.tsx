@@ -1,29 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface SalesPipelineControlsProps {
   onSearch: (query: string) => void;
   onFilter: (stage: string) => void;
   onSort: (order: string) => void;
+  openInputModal: (isOpen: boolean) => void;
 }
 
-const SalesPipelineControls: React.FC<SalesPipelineControlsProps> = ({ onSearch, onFilter, onSort }) => {
+const SalesPipelineControls: React.FC<SalesPipelineControlsProps> = ({ 
+  onSearch, 
+  onFilter, 
+  onSort,
+  openInputModal 
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-      <div className="mb-4 sm:mb-0">
-        <input
-          type="text"
-          placeholder="Search by name or company..."
-          onChange={(e) => onSearch(e.target.value)}
-          className="w-full sm:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      <div className="flex items-center space-x-4">
+    <div className="mb-6 bg-white p-4 rounded-lg hover:shadow-lg shadow-md transition-shadow duration-200">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
+        {/* Search Input */}
         <div>
-          <label htmlFor="filter" className="text-sm font-medium text-gray-700 mr-2">Filter by stage:</label>
+          <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">Search:</label>
+          <input
+            type="text"
+            id="search"
+            placeholder="Search company"
+            onChange={(e) => onSearch(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        {/* Filter Dropdown */}
+        <div>
+          <label htmlFor="filter" className="block text-sm font-medium text-gray-700 mb-1">Filter by stage:</label>
           <select
             id="filter"
             onChange={(e) => onFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">All</option>
             <option value="Initial Contact">Initial Contact</option>
@@ -34,18 +47,59 @@ const SalesPipelineControls: React.FC<SalesPipelineControlsProps> = ({ onSearch,
             <option value="Closed Lost">Closed Lost</option>
           </select>
         </div>
+
+        {/* Sort Dropdown */}
         <div>
-          <label htmlFor="sort" className="text-sm font-medium text-gray-700 mr-2">Sort by:</label>
+          <label htmlFor="sort" className="block text-sm font-medium text-gray-700 mb-1">Sort by:</label>
           <select
             id="sort"
             onChange={(e) => onSort(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="value-desc">Value (High to Low)</option>
             <option value="value-asc">Value (Low to High)</option>
             <option value="closeDate-asc">Close Date (Asc)</option>
             <option value="closeDate-desc">Close Date (Desc)</option>
           </select>
+        </div>
+
+        {/* Actions Dropdown */}
+        <div className="relative self-end">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Action...
+          </button>
+          {isOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-10 border border-gray-200">
+              <ul className="py-2">
+                <li>
+                  <button
+                    onClick={() => {
+                      // Add your logic for adding data
+                      openInputModal(true);
+                      setIsOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
+                    Add Data
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      // Add your logic for blasting data
+                      setIsOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
+                    Blast Data
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </div>
