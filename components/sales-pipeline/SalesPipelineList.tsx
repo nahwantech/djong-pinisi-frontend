@@ -105,6 +105,12 @@ const SalesPipelineList: React.FC = () => {
   const [selectedLead, setSelectedLead] = useState<SalesPipelineCardProps['lead'] | null>(null);
   const [isInputModalOpen, setIsInputModalOpen] = useState(false);
 
+  // Lead Input States
+  const [leadValue, setLeadValue] = useState('');
+  const [leadCompany, setLeadCompany] = useState('');
+  const [leadPIC, setLeadPIC] = useState('');
+  const [leadStage, setLeadStage] = useState('Initial Contact');
+
   const filteredAndSortedData = useMemo(() => {
     let filteredData = salesData;
 
@@ -159,16 +165,30 @@ const SalesPipelineList: React.FC = () => {
       
       {/* Input Modal */}
       {isInputModalOpen && (
-        <SalesPipelineInputModal onClose={() => setIsInputModalOpen(false)} lead={{
-          id: 0,
-          name: '',
-          company: '',
-          stage: 'Initial Contact',
-          value: 0,
-          closeDate: '',
-          comment: '',
-          history: []
-        }} />
+        <SalesPipelineInputModal 
+          onClose={() => setIsInputModalOpen(false)} lead={{
+            id: 0,
+            name: '',
+            company: '',
+            stage: 'Initial Contact',
+            value: 0,
+            closeDate: '',
+            comment: '',
+            history: []
+          }}
+          onChangeLeadsValue={(leadValue) => {
+            setLeadValue(leadValue);
+          }}
+          onChangeCompanyName={(leadCompany) => {
+            setLeadCompany(leadCompany);
+          }}
+          onChangePIC={(leadPIC) => {
+            setLeadPIC(leadPIC);
+          }}
+          onSelectStatus={(leadStage) => {
+            setLeadStage(leadStage);
+          }}
+        />
       )}
       
       

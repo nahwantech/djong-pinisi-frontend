@@ -8,7 +8,11 @@ interface SalesPipelineDetailModalProps {
   onSubmitStory?: (data: { comment: string; stage: string }) => void;
 }
 
-const SalesPipelineDetailModal: React.FC<SalesPipelineDetailModalProps> = ({ lead, onClose, onSubmitStory }) => {
+const SalesPipelineDetailModal: React.FC<SalesPipelineDetailModalProps> = ({ 
+  lead, 
+  onClose, 
+  onSubmitStory 
+}) => {
   const gf = new GeneralFunction();
   const [comment, setComment] = useState('');
   const [stage, setStage] = useState(lead?.stage || '');
