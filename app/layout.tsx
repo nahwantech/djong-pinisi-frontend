@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import AppWrapper from '../components/AppWrapper' // your new wrapper
+import { Providers } from './providers';
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Providers>
         <AppWrapper>{children}</AppWrapper>
+        </Providers>
       </body>
     </html>
   )
