@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SalesPipelineCardProps } from './SalesPipelineCard';
 import GeneralFunction from '../generals/gengeral-function';
 import { on } from 'events';
+import GeneralLoadingPage from '../loading-components/generalLoadingPage';
 
 interface SalesPipelineInputModalProps {
     lead: SalesPipelineCardProps['lead'] | null;
@@ -26,7 +27,7 @@ const SalesPipelineInputModal: React.FC<SalesPipelineInputModalProps> = ({
     const gf = new GeneralFunction();
     
     return (
-        isLoading ? <div>Loading...</div> :
+        isLoading ? <GeneralLoadingPage /> :
         <div className="fixed inset-0 flex justify-center items-center z-50">
             <div className="relative bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 my-6">
                 {/* Modal Header */}
