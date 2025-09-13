@@ -42,7 +42,7 @@ const SalesPipelineDetailModal: React.FC<SalesPipelineDetailModalProps> = ({
         {/* Modal Header */}
         <div className="sticky top-0 bg-white px-6 py-4 border-b">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold text-gray-800">{lead.name} - {lead.company}</h2>
+            <h2 className="text-2xl font-bold text-gray-800">{lead.name} - {lead.paxname}</h2>
             <button 
               onClick={onClose} 
               className="text-gray-500 hover:text-gray-800 text-2xl"
@@ -118,7 +118,7 @@ const SalesPipelineDetailModal: React.FC<SalesPipelineDetailModalProps> = ({
                       <p className="text-sm text-gray-600">{gf.formatDateTime(new Date(item.date))}</p>
                     </div>
                   </div>
-                  <p className="ml-12 mb-6 text-gray-700"><b>Details : </b>{item.comment}</p>
+                  <p className="ml-12 mb-6 text-gray-700"><b>Comment : </b>{item.comment}</p>
                 </>
                 
               ))}

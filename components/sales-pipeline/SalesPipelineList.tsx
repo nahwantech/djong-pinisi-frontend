@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SalesPipelineCard from './SalesPipelineCard';
 import SalesPipelineControls from './SalesPipelineControls';
@@ -16,10 +16,10 @@ import {
   setSelectedLead,
   setIsInputModalOpen,
   setLeadValue,
-  setLeadCompany,
+  setLeadPaxName,
   setLeadPIC,
   setLeadStage
-} from '../../store/features/salesPipelineSlice';
+} from '../../store/features/sales-pipeline/salesPipelineSlice';
 
 const SalesPipelineList: React.FC = () => {
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ const SalesPipelineList: React.FC = () => {
           lead={{
             id: 0,
             name: '',
-            company: '',
+            paxname: '',
             stage: 'Initial Contact',
             value: 0,
             closeDate: '',
@@ -57,9 +57,10 @@ const SalesPipelineList: React.FC = () => {
             history: []
           }}
           onChangeLeadsValue={(value) => dispatch(setLeadValue(value))}
-          onChangeCompanyName={(company) => dispatch(setLeadCompany(company))}
+          onChangePaxName={(paxname) => dispatch(setLeadPaxName(paxname))}
           onChangePIC={(pic) => dispatch(setLeadPIC(pic))}
           onSelectStatus={(stage) => dispatch(setLeadStage(stage))}
+          isLoading={(isLoading) => dispatch({ type: 'salesPipeline/setIsModalInputLoading', payload: isLoading })}
         />
       )}
       

@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import salesPipelineReducer from './features/salesPipelineSlice';
+import salesPipelineReducer from './features/sales-pipeline/salesPipelineSlice';
 
 export const store = configureStore({
   reducer: {

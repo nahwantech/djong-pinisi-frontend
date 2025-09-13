@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SalesPipelineCardProps } from '../../components/sales-pipeline/SalesPipelineCard';
+import { SalesPipelineCardProps } from '../../../components/sales-pipeline/SalesPipelineCard';
 
 interface SalesPipelineState {
   searchQuery: string;
@@ -7,15 +7,18 @@ interface SalesPipelineState {
   sortOrder: string;
   currentPage: number;
   selectedLead: SalesPipelineCardProps['lead'] | null;
-  isInputModalOpen: boolean;
   leadValue: string;
-  leadCompany: string;
+  leadpaxname: string;
   leadPIC: string;
   leadStage: string;
   salesData: SalesPipelineCardProps['lead'][];
   filteredAndSortedData: SalesPipelineCardProps['lead'][];
   paginatedData: SalesPipelineCardProps['lead'][];
   itemsPerPage: number;
+  
+  // Modal State
+  isInputModalOpen: boolean;
+  isModalInputLoading: boolean;
 }
 
 const initialState: SalesPipelineState = {
@@ -25,15 +28,18 @@ const initialState: SalesPipelineState = {
   currentPage: 1,
   selectedLead: null,
   isInputModalOpen: false,
+  isModalInputLoading: false,
   leadValue: '',
-  leadCompany: '',
+  leadpaxname: '',
   leadPIC: '',
   leadStage: 'Initial Contact',
-  salesData: [
+  salesData: [],
+  filteredAndSortedData: [],
+  paginatedData: [
     {
       id: 1,
       name: "John Smith",
-      company: "Bali Adventures Ltd",
+      paxname: "Bali Adventures Ltd",
       stage: "Initial Contact",
       value: 15000,
       closeDate: "2025-10-15",
@@ -49,7 +55,7 @@ const initialState: SalesPipelineState = {
     {
       id: 2,
       name: "Sarah Johnson",
-      company: "Singapore Travel Group",
+      paxname: "Singapore Travel Group",
       stage: "Qualification",
       value: 45000,
       closeDate: "2025-11-01",
@@ -70,7 +76,7 @@ const initialState: SalesPipelineState = {
     {
       id: 3,
       name: "Michael Chen",
-      company: "Asian Tours Co",
+      paxname: "Asian Tours Co",
       stage: "Proposal",
       value: 75000,
       closeDate: "2025-10-30",
@@ -96,7 +102,7 @@ const initialState: SalesPipelineState = {
     {
       id: 4,
       name: "Emily Davis",
-      company: "Luxury Escapes",
+      paxname: "Luxury Escapes",
       stage: "Negotiation",
       value: 95000,
       closeDate: "2025-09-30",
@@ -127,7 +133,7 @@ const initialState: SalesPipelineState = {
     {
       id: 5,
       name: "Robert Wilson",
-      company: "Corporate Events International",
+      paxname: "Corporate Events International",
       stage: "Closed Won",
       value: 120000,
       closeDate: "2025-09-05",
@@ -163,7 +169,7 @@ const initialState: SalesPipelineState = {
     {
       id: 6,
       name: "Lisa Wong",
-      company: "Travel Masters",
+      paxname: "Travel Masters",
       stage: "Closed Lost",
       value: 25000,
       closeDate: "2025-09-01",
@@ -192,8 +198,6 @@ const initialState: SalesPipelineState = {
       ]
     }
   ],
-  filteredAndSortedData: [],
-  paginatedData: [],
   itemsPerPage: 5
 };
 
@@ -207,36 +211,54 @@ const salesPipelineSlice = createSlice({
       updateFilteredAndSortedData(state);
       updatePaginatedData(state);
     },
+
+    // Filter State
     setFilterStage: (state, action: PayloadAction<string>) => {
       state.filterStage = action.payload;
       state.currentPage = 1;
       updateFilteredAndSortedData(state);
       updatePaginatedData(state);
     },
+
+    // Sort State
     setSortOrder: (state, action: PayloadAction<string>) => {
       state.sortOrder = action.payload;
       updateFilteredAndSortedData(state);
       updatePaginatedData(state);
     },
+
+    // Pagination State
     setCurrentPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload;
       updatePaginatedData(state);
     },
+
+    // Selected Lead for Detail Modal
     setSelectedLead: (state, action: PayloadAction<SalesPipelineCardProps['lead'] | null>) => {
       state.selectedLead = action.payload;
     },
+
+    // Input Modal State
     setIsInputModalOpen: (state, action: PayloadAction<boolean>) => {
       state.isInputModalOpen = action.payload;
     },
+
+    // Lead Value
     setLeadValue: (state, action: PayloadAction<string>) => {
       state.leadValue = action.payload;
     },
-    setLeadCompany: (state, action: PayloadAction<string>) => {
-      state.leadCompany = action.payload;
+
+    // Lead Pax Name
+    setLeadPaxName: (state, action: PayloadAction<string>) => {
+      state.leadpaxname = action.payload;
     },
+
+    // Lead PIC
     setLeadPIC: (state, action: PayloadAction<string>) => {
       state.leadPIC = action.payload;
     },
+
+    // Lead Stage
     setLeadStage: (state, action: PayloadAction<string>) => {
       state.leadStage = action.payload;
     }
@@ -250,7 +272,7 @@ const updateFilteredAndSortedData = (state: SalesPipelineState) => {
   if (state.searchQuery) {
     filteredData = filteredData.filter(lead =>
       lead.name.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
-      lead.company.toLowerCase().includes(state.searchQuery.toLowerCase())
+      lead.paxname.toLowerCase().includes(state.searchQuery.toLowerCase())
     );
   }
 
@@ -288,7 +310,7 @@ export const {
   setSelectedLead,
   setIsInputModalOpen,
   setLeadValue,
-  setLeadCompany,
+  setLeadPaxName,
   setLeadPIC,
   setLeadStage
 } = salesPipelineSlice.actions;

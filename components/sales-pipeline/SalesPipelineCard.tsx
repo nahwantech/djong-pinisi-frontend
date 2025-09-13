@@ -5,7 +5,7 @@ export interface SalesPipelineCardProps {
   lead: {
     id: number;
     name: string;
-    company: string;
+    paxname: string;
     stage: 'Initial Contact' | 'Qualification' | 'Proposal' | 'Negotiation' | 'Closed Won' | 'Closed Lost';
     value: number;
     closeDate?: string;
@@ -49,7 +49,7 @@ const SalesPipelineCard: React.FC<SalesPipelineCardProps> = ({ lead, onClick }) 
     >
       <div className="flex-grow">
         <h3 className="text-lg font-semibold text-gray-800">{lead.name}</h3>
-        <p className="text-sm text-gray-600">{lead.company}</p>
+        <p className="text-sm text-gray-600">{lead.paxname}</p>
       </div>
       <div className="flex items-center mt-4 sm:mt-0">
         <div className={`px-3 py-1 rounded-full text-sm font-semibold ${getStageColor(lead.stage)}`}>
