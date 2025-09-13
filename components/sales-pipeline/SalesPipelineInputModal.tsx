@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { SalesPipelineCardProps } from './SalesPipelineCard';
 import GeneralFunction from '../generals/gengeral-function';
-import { on } from 'events';
 import GeneralLoadingPage from '../loading-components/generalLoadingPage';
+import { useSelector } from 'react-redux';
+// Update the path below to the correct location of your store file
+import { RootState } from '../../store/store';
 
 interface SalesPipelineInputModalProps {
     lead: SalesPipelineCardProps['lead'] | null;
@@ -11,7 +13,7 @@ interface SalesPipelineInputModalProps {
     onChangePaxName: (paxName: string) => void;
     onChangePIC: (pic: string) => void;
     onClose: () => void;
-    isLoading: (isLoading: boolean) => void;
+    onSubmit: () => void;
 }
 
 const SalesPipelineInputModal: React.FC<SalesPipelineInputModalProps> = ({
@@ -21,8 +23,10 @@ const SalesPipelineInputModal: React.FC<SalesPipelineInputModalProps> = ({
     onChangeLeadsValue,
     onSelectStatus,
     onChangePIC,
-    isLoading
+    onSubmit
 }) => {
+    // Get the loading state from Redux store
+    const isLoading = useSelector((state: RootState) => state.salesPipeline.isModalInputLoading);
 
     const gf = new GeneralFunction();
     
@@ -105,7 +109,7 @@ const SalesPipelineInputModal: React.FC<SalesPipelineInputModalProps> = ({
                 {/* Modal Footer */}
                 <div className="sticky bottom-0 bg-white px-6 py-4 border-t">
                 <button
-                    onClick={onClose}
+                    onClick={onSubmit}
                     className="w-full bg-blue-500 text-white rounded-lg hover:bg-blue-600 px-4 py-2"
                 >
                     Submit

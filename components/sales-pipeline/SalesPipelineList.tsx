@@ -18,7 +18,8 @@ import {
   setLeadValue,
   setLeadPaxName,
   setLeadPIC,
-  setLeadStage
+  setLeadStage,
+  setIsModalInputLoading,
 } from '../../store/features/sales-pipeline/salesPipelineSlice';
 
 const SalesPipelineList: React.FC = () => {
@@ -60,7 +61,7 @@ const SalesPipelineList: React.FC = () => {
           onChangePaxName={(paxname) => dispatch(setLeadPaxName(paxname))}
           onChangePIC={(pic) => dispatch(setLeadPIC(pic))}
           onSelectStatus={(stage) => dispatch(setLeadStage(stage))}
-          isLoading={(isLoading) => dispatch({ type: 'salesPipeline/setIsModalInputLoading', payload: isLoading })}
+          onSubmit={() => dispatch(setIsModalInputLoading(true))}
         />
       )}
       

@@ -261,7 +261,12 @@ const salesPipelineSlice = createSlice({
     // Lead Stage
     setLeadStage: (state, action: PayloadAction<string>) => {
       state.leadStage = action.payload;
-    }
+    },
+
+    // setLoading
+    setIsModalInputLoading: (state, action: PayloadAction<boolean>) => {
+      state.isModalInputLoading = action.payload;
+    },
   }
 });
 
@@ -312,7 +317,8 @@ export const {
   setLeadValue,
   setLeadPaxName,
   setLeadPIC,
-  setLeadStage
+  setLeadStage,
+  setIsModalInputLoading,
 } = salesPipelineSlice.actions;
 
 export default salesPipelineSlice.reducer;
