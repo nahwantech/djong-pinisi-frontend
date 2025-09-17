@@ -6,7 +6,7 @@ import { useState } from 'react';
 import PackageTourList from "../../components/package-tours/PackageTourList";
 
 // app/booking/page.tsx
-export default function Booking() {
+export default function Product() {
 
   const [adultQty, setAdultQty] = useState(0);
   const [childQty, setChildQty] = useState(0);
