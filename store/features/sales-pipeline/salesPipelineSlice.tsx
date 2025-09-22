@@ -203,7 +203,16 @@ const initialState: SalesPipelineState = {
 
 const salesPipelineSlice = createSlice({
   name: 'salesPipeline',
-  initialState,
+  initialState: {
+    salesData: [],
+    filteredAndSortedData: [],
+    paginatedData: [],
+    searchQuery: '',
+    filterStage: '',
+    sortOrder: 'value-asc',
+    currentPage: 1,
+    itemsPerPage: 5
+  } as SalesPipelineState,
   reducers: {
     setSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
