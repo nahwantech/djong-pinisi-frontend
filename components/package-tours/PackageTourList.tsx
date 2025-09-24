@@ -3,15 +3,8 @@
 import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import PackageTourCard from "./PackageTourCard";
-import ProductControls from "./ProductControls";
 import { RootState } from '../../store/store';
 import {
-  setSearchQuery,
-  setMinPrice,
-  setMaxPrice,
-  setAvailabilityFilter,
-  setDestinationFilter,
-  setSortOrder,
   setCurrentPage,
   setSelectedPackage,
 } from '../../store/features/product/productSlice';
@@ -22,12 +15,6 @@ export default function PackageTourList() {
   const {
     paginatedPackages,
     filteredAndSortedPackages,
-    searchQuery,
-    minPrice,
-    maxPrice,
-    availabilityFilter,
-    destinationFilter,
-    sortOrder,
     currentPage,
     itemsPerPage,
   } = useSelector((state: RootState) => state.product);
@@ -36,20 +23,7 @@ export default function PackageTourList() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4">
-      <ProductControls
-        onSearch={(query) => dispatch(setSearchQuery(query))}
-        onMinPriceChange={(price) => dispatch(setMinPrice(price))}
-        onMaxPriceChange={(price) => dispatch(setMaxPrice(price))}
-        onAvailabilityFilter={(filter) => dispatch(setAvailabilityFilter(filter))}
-        onDestinationFilter={(destination) => dispatch(setDestinationFilter(destination))}
-        onSort={(order) => dispatch(setSortOrder(order))}
-        searchQuery={searchQuery}
-        minPrice={minPrice}
-        maxPrice={maxPrice}
-        availabilityFilter={availabilityFilter}
-        destinationFilter={destinationFilter}
-        sortOrder={sortOrder}
-      />
+      
 
       {/* Package Cards */}
       {paginatedPackages.length > 0 ? (
