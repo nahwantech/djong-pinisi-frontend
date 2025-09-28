@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PrimaryButton from '../generals/btns/primary-button';
 
 interface SalesPipelineControlsProps {
   onSearch: (query: string) => void;
@@ -65,12 +66,11 @@ const SalesPipelineControls: React.FC<SalesPipelineControlsProps> = ({
 
         {/* Actions Dropdown */}
         <div className="relative self-end">
-          <button
+          
+          <PrimaryButton
             onClick={() => setIsOpen(!isOpen)}
-            className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Action...
-          </button>
+            ButtonDesc="Actions"
+          />
           {isOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-10 border border-gray-200">
               <ul className="py-2">

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SalesPipelineCardProps } from './SalesPipelineCard';
 import GeneralFunction from '../generals/gengeral-function';
+import PrimaryButton from '../generals/btns/primary-button';
 
 interface SalesPipelineDetailModalProps {
   lead: SalesPipelineCardProps['lead'];
@@ -93,12 +94,10 @@ const SalesPipelineDetailModal: React.FC<SalesPipelineDetailModalProps> = ({
                   placeholder="Add your comment here..."
                 />
               </div>
-              <button
-                type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-              >
-                Submit Story
-              </button>
+              <PrimaryButton
+                onClick={handleSubmit}
+                ButtonDesc="Submit Story"
+              />
             </form>
           </div>
 

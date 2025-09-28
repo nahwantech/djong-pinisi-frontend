@@ -5,6 +5,7 @@ import GeneralLoadingPage from '../loading-components/generalLoadingPage';
 import { useSelector } from 'react-redux';
 // Update the path below to the correct location of your store file
 import { RootState } from '../../store/store';
+import PrimaryButton from '../generals/btns/primary-button';
 
 interface SalesPipelineInputModalProps {
     lead: SalesPipelineCardProps['lead'] | null;
@@ -107,12 +108,10 @@ const SalesPipelineInputModal: React.FC<SalesPipelineInputModalProps> = ({
 
                 {/* Modal Footer */}
                 <div className="sticky bottom-0 bg-white px-6 py-4 border-t">
-                <button
+                <PrimaryButton
                     onClick={onSubmit}
-                    className="w-full bg-blue-500 text-white rounded-lg hover:bg-blue-600 px-4 py-2"
-                >
-                    Submit
-                </button>
+                    ButtonDesc="Submit"
+                />
                 </div>
             </div>
         </div>
