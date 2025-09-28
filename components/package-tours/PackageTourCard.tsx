@@ -53,7 +53,7 @@ export default function PackageTourCard({
         {/* Price */}
         <div className="mt-3">
           <span className="text-lg font-bold text-blue-600">
-            ${pricePerPax.toLocaleString()}
+            IDR {pricePerPax.toLocaleString()}
           </span>
           <span className="text-gray-500"> / pax</span>
         </div>
