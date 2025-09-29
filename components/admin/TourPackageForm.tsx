@@ -9,6 +9,7 @@ import {
   closeCreateModal, 
   closeEditModal 
 } from '@/store/features/tour-package/tourPackageSlice';
+import PrimaryButton from '../generals/btns/primary-button';
 
 interface TourPackageFormProps {
   isEdit?: boolean;
@@ -156,8 +157,9 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            
           {/* Basic Information */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Package Title *
@@ -182,6 +184,20 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
                 onChange={(e) => setFormData(prev => ({ ...prev, destination: e.target.value }))}
               />
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Duration * (in Days)
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="e.g., 5"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={formData.duration}
+                onChange={(e) => setFormData(prev => ({ ...prev, duration: e.target.value }))}
+              />
+            </div>
           </div>
 
           <div>
@@ -200,15 +216,15 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Duration *
+                Price per Pax (IDR) *
               </label>
               <input
-                type="text"
+                type="number"
                 required
-                placeholder="e.g., 5 Days 4 Nights"
+                min="0"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.duration}
-                onChange={(e) => setFormData(prev => ({ ...prev, duration: e.target.value }))}
+                value={formData.pricePerPax}
+                onChange={(e) => setFormData(prev => ({ ...prev, pricePerPax: e.target.value }))}
               />
             </div>
             <div>
@@ -240,19 +256,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Price per Pax (IDR) *
-              </label>
-              <input
-                type="number"
-                required
-                min="0"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.pricePerPax}
-                onChange={(e) => setFormData(prev => ({ ...prev, pricePerPax: e.target.value }))}
-              />
-            </div>
+            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Image URL *
@@ -344,12 +348,12 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              {isEdit ? 'Update Package' : 'Create Package'}
-            </button>
+
+            <PrimaryButton
+                onClick={handleSubmit}
+                ButtonDesc={isEdit ? 'Update Package' : 'Create Package'}
+            />
+            
           </div>
         </form>
       </div>
