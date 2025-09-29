@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface LineChartData {
   label: string;
@@ -22,6 +22,12 @@ const LineChart: React.FC<LineChartProps> = ({
   height = 250,
   color = '#3B82F6'
 }) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const padding = 40;
   const chartWidth = width - 2 * padding;
   const chartHeight = height - 2 * padding;
@@ -29,6 +35,23 @@ const LineChart: React.FC<LineChartProps> = ({
   const maxValue = Math.max(...data.map(d => d.value));
   const minValue = Math.min(...data.map(d => d.value));
   const valueRange = maxValue - minValue || 1;
+
+  // Prevent hydration mismatch by not rendering SVG until mounted
+  if (!isMounted) {
+    return (
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold mb-4 text-gray-800 text-center">{title}</h3>
+        <div className="flex justify-center">
+          <div 
+            className="flex items-center justify-center bg-gray-100 rounded-lg"
+            style={{ width, height }}
+          >
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   
   // Create points for the line
   const points = data.map((item, index) => {

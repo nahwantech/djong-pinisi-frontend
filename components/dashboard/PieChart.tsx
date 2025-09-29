@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface PieChartData {
   label: string;
@@ -15,9 +15,33 @@ interface PieChartProps {
 }
 
 const PieChart: React.FC<PieChartProps> = ({ data, title, size = 200 }) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const total = data.reduce((sum, item) => sum + item.value, 0);
   const center = size / 2;
   const radius = size / 2 - 10;
+  
+  // Prevent hydration mismatch by not rendering SVG until mounted
+  if (!isMounted) {
+    return (
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold mb-4 text-gray-800 text-center">{title}</h3>
+        <div className="flex flex-col items-center">
+          <div 
+            className="mb-4 flex items-center justify-center bg-gray-100 rounded-full"
+            style={{ width: size, height: size }}
+          >
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+          <div className="text-sm text-gray-500">Loading chart...</div>
+        </div>
+      </div>
+    );
+  }
   
   let cumulativePercentage = 0;
   

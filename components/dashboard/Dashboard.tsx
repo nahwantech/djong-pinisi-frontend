@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PieChart from './PieChart';
 import LineChart from './LineChart';
 
@@ -51,11 +51,34 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ className = '' }) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // Calculate summary statistics
   const totalBookings = bookingStatusData.reduce((sum, item) => sum + item.value, 0);
   const totalRevenue = revenueTrendsData[revenueTrendsData.length - 1].value;
   const totalPipelineValue = salesPipelineData.reduce((sum, item) => sum + item.value, 0);
   const conversionRate = ((salesPipelineData[4].value / salesPipelineData[0].value) * 100);
+
+  // Prevent hydration mismatch by not rendering charts until mounted
+  if (!isMounted) {
+    return (
+      <div className={`min-h-screen bg-gray-50 p-6 ${className}`}>
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Analytics Dashboard</h1>
+            <p className="text-gray-600">Loading dashboard...</p>
+          </div>
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen bg-gray-50 p-6 ${className}`}>
