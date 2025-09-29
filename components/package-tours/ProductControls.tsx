@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 
 interface ProductControlsProps {
   onSearch: (query: string) => void;
@@ -87,8 +88,11 @@ const ProductControls: React.FC<ProductControlsProps> = ({
                   }}
                   className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200"
                 >
-                  Admin Area
+                  <Link href="/admin-area" className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
+                    Admin Area
+                  </Link>
                 </button>
+                
               </div>
             </div>
           )}

@@ -2,6 +2,7 @@
 'use client'; // This directive is necessary for client-side interactivity in App Router
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import ProductLogoSvg from '../../public/assets/navbar/product-box.svg'; 
 import TrendingUpLogoSvg from '../../public/assets/navbar/trending-up.svg';
@@ -15,6 +16,7 @@ import FileBarLogoSvg from '../../public/assets/navbar/file-bar-chart.svg';
 import { FaUserCircle, FaSignOutAlt, FaCog } from 'react-icons/fa'; // Example icons
 
 export default function Navbar() {
+  const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Ref for detecting clicks outside
 
@@ -50,10 +52,9 @@ export default function Navbar() {
   };
 
   const handleAdminArea = () => {
-    // Implement navigation to admin area
-    console.log('Navigating to Admin Area...');
+    // Navigate to admin area using Next.js router
+    router.push('/admin-area');
     setIsDropdownOpen(false); // Close dropdown after action
-    // Use Next.js router for navigation: useRouter().push('/admin')
   };
 
   return (
