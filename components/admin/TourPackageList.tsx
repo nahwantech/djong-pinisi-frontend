@@ -43,12 +43,18 @@ const TourPackageList: React.FC = () => {
     dispatch(openDeleteModal(id));
   };
 
-  const formatPrice = (price: number) => {
+  const formatPrice = (price: string) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
       currency: 'IDR',
       minimumFractionDigits: 0,
-    }).format(price);
+    }).format(parseInt(price));
+  };
+
+  // Get the lowest price from all rate tiers
+  const getLowestPrice = (rates: any[]) => {
+    if (!rates || rates.length === 0) return 0;
+    return Math.min(...rates.map(r => parseInt(r.pricePerPax)));
   };
 
   const formatDate = (dateString: string) => {
@@ -175,12 +181,12 @@ const TourPackageList: React.FC = () => {
                       <span className="text-gray-900">{package_.duration}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Price per Pax:</span>
-                      <span className="text-blue-600 font-semibold">{formatPrice(package_.pricePerPax)}</span>
+                      <span className="text-gray-500">Starting Price:</span>
+                      <span className="text-blue-600 font-semibold">{formatPrice(getLowestPrice(package_.rate).toString())}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Capacity:</span>
-                      <span className="text-gray-900">{package_.minPax}-{package_.maxPax} pax</span>
+                      <span className="text-gray-500">Pricing Tiers:</span>
+                      <span className="text-gray-900">{package_.rate.length} tier{package_.rate.length > 1 ? 's' : ''}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Last Updated:</span>

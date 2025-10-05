@@ -1,18 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+// Define rate
+export interface Rate {
+  pricePerPax: string;
+  maxPax: string;
+  minPax: string;
+}
+
 // Define the tour package type
 export interface TourPackage {
   id: number;
   imageUrl: string;
   title: string;
   description: string;
-  pricePerPax: number;
+  rate: Rate[];
   terms: string;
   available: boolean;
   destination: string;
   duration: string;
-  maxPax: number;
-  minPax: number;
   includes: string[];
   excludes: string[];
   itinerary: string[];
@@ -42,13 +47,15 @@ const sampleTourPackages: TourPackage[] = [
     imageUrl: "https://picsum.photos/400/200?random=1",
     title: "Bali Cultural Heritage Tour",
     description: "Explore Bali's rich cultural heritage with visits to ancient temples, traditional villages, and cultural performances.",
-    pricePerPax: 2500000,
-    terms: "Non-refundable after 7 days before departure. Minimum 2 pax required.",
+    rate: [
+      { pricePerPax: "2800000", minPax: "1", maxPax: "3" },
+      { pricePerPax: "2500000", minPax: "4", maxPax: "8" },
+      { pricePerPax: "2200000", minPax: "9", maxPax: "15" }
+    ],
+    terms: "Non-refundable after 7 days before departure. Minimum 1 pax required.",
     available: true,
     destination: "Bali, Indonesia",
     duration: "5 Days 4 Nights",
-    maxPax: 15,
-    minPax: 2,
     includes: ["Accommodation", "Meals", "Transportation", "Tour Guide", "Entrance Fees"],
     excludes: ["Flight Tickets", "Travel Insurance", "Personal Expenses", "Tips"],
     itinerary: [
@@ -66,13 +73,15 @@ const sampleTourPackages: TourPackage[] = [
     imageUrl: "https://picsum.photos/400/200?random=2",
     title: "Yogyakarta Historical Journey",
     description: "Discover the ancient kingdoms of Java through historical sites and royal palaces.",
-    pricePerPax: 1800000,
+    rate: [
+      { pricePerPax: "2000000", minPax: "1", maxPax: "5" },
+      { pricePerPax: "1800000", minPax: "6", maxPax: "12" },
+      { pricePerPax: "1600000", minPax: "13", maxPax: "20" }
+    ],
     terms: "Flexible cancellation up to 3 days before departure.",
     available: true,
     destination: "Yogyakarta, Indonesia",
     duration: "3 Days 2 Nights",
-    maxPax: 20,
-    minPax: 4,
     includes: ["Hotel", "Breakfast", "Transportation", "English Guide"],
     excludes: ["Lunch & Dinner", "Flight", "Personal Shopping"],
     itinerary: [
@@ -88,13 +97,15 @@ const sampleTourPackages: TourPackage[] = [
     imageUrl: "https://picsum.photos/400/200?random=3",
     title: "Raja Ampat Diving Expedition",
     description: "Experience world-class diving in the marine biodiversity capital of the world.",
-    pricePerPax: 8500000,
+    rate: [
+      { pricePerPax: "9500000", minPax: "1", maxPax: "2" },
+      { pricePerPax: "8500000", minPax: "3", maxPax: "6" },
+      { pricePerPax: "7800000", minPax: "7", maxPax: "12" }
+    ],
     terms: "Diving certification required. Medical clearance needed.",
     available: false,
     destination: "Raja Ampat, West Papua",
     duration: "7 Days 6 Nights",
-    maxPax: 8,
-    minPax: 4,
     includes: ["Liveaboard Accommodation", "All Meals", "Diving Equipment", "Dive Guide"],
     excludes: ["Flight to Sorong", "Diving Insurance", "Nitrox"],
     itinerary: [

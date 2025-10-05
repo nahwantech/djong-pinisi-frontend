@@ -16,12 +16,26 @@ const TourPackageDetailModal: React.FC<TourPackageDetailModalProps> = ({
 }) => {
   if (!isOpen || !tourPackage) return null;
 
-  const formatPrice = (price: number) => {
+  const formatPrice = (price: string) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
       currency: 'IDR',
       minimumFractionDigits: 0,
-    }).format(price);
+    }).format(parseInt(price));
+  };
+
+  // Get the lowest price from all rate tiers
+  const getLowestPrice = () => {
+    if (!tourPackage.rate || tourPackage.rate.length === 0) return 0;
+    return Math.min(...tourPackage.rate.map(r => parseInt(r.pricePerPax)));
+  };
+
+  // Get the overall group size range
+  const getGroupSizeRange = () => {
+    if (!tourPackage.rate || tourPackage.rate.length === 0) return "1-10";
+    const minPax = Math.min(...tourPackage.rate.map(r => parseInt(r.minPax)));
+    const maxPax = Math.max(...tourPackage.rate.map(r => parseInt(r.maxPax)));
+    return `${minPax}-${maxPax}`;
   };
 
   return (
@@ -78,15 +92,25 @@ const TourPackageDetailModal: React.FC<TourPackageDetailModalProps> = ({
                       <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
-                      <span className="font-medium">Group Size:</span>&nbsp;{tourPackage.minPax}-{tourPackage.maxPax} Pax
+                      <span className="font-medium">Group Size:</span>&nbsp;{getGroupSizeRange()} Pax
                     </div>
-                    
-                    <div className="flex items-center text-sm text-gray-600">
-                      <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                      </svg>
-                      <span className="font-medium">Price:</span>&nbsp;{formatPrice(tourPackage.pricePerPax)} per person
-                    </div>
+                  </div>
+                </div>
+
+                {/* Pricing Tiers */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Pricing Tiers</h3>
+                  <div className="space-y-2">
+                    {tourPackage.rate.map((rate, index) => (
+                      <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                        <div className="text-sm text-gray-600">
+                          {rate.minPax}-{rate.maxPax} Passengers
+                        </div>
+                        <div className="text-sm font-medium text-blue-600">
+                          {formatPrice(rate.pricePerPax)} per person
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -158,7 +182,7 @@ const TourPackageDetailModal: React.FC<TourPackageDetailModalProps> = ({
             <div>
               <p className="text-sm text-gray-500">Total price starting from</p>
               <p className="text-2xl font-bold text-blue-600">
-                {formatPrice(tourPackage.pricePerPax)}
+                {formatPrice(getLowestPrice().toString())}
               </p>
               <p className="text-sm text-gray-500">per person</p>
             </div>

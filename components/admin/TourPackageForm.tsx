@@ -31,9 +31,11 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
     description: '',
     destination: '',
     duration: '',
-    pricePerPax: '',
-    maxPax: '',
-    minPax: '',
+    rate: [{
+        pricePerPax: '',
+        maxPax: '',
+        minPax: ''
+    }],
     imageUrl: '',
     terms: '',
     available: true,
@@ -49,9 +51,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
         description: initialData.description,
         destination: initialData.destination,
         duration: initialData.duration,
-        pricePerPax: initialData.pricePerPax.toString(),
-        maxPax: initialData.maxPax.toString(),
-        minPax: initialData.minPax.toString(),
+        rate: initialData.rate,
         imageUrl: initialData.imageUrl,
         terms: initialData.terms,
         available: initialData.available,
@@ -66,9 +66,11 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
         description: '',
         destination: '',
         duration: '',
-        pricePerPax: '',
-        maxPax: '',
-        minPax: '',
+        rate: [{
+          pricePerPax: '',
+          maxPax: '',
+          minPax: ''
+        }],
         imageUrl: '',
         terms: '',
         available: true,
@@ -86,15 +88,18 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
       dispatch(closeCreateModal());
     }
   };
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     const packageData = {
       ...formData,
-      pricePerPax: parseInt(formData.pricePerPax),
-      maxPax: parseInt(formData.maxPax),
-      minPax: parseInt(formData.minPax),
+      rate: formData.rate.map(r => ({
+        pricePerPax: r.pricePerPax,
+        maxPax: r.maxPax,
+        minPax: r.minPax
+      })),
       includes: formData.includes.filter(item => item.trim() !== ''),
       excludes: formData.excludes.filter(item => item.trim() !== ''),
       itinerary: formData.itinerary.filter(item => item.trim() !== '')
@@ -132,6 +137,32 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
     setFormData(prev => ({
       ...prev,
       [field]: prev[field].map((item, i) => i === index ? value : item)
+    }));
+  };
+
+  // Rate management functions
+  const addRateItem = () => {
+    setFormData(prev => ({
+      ...prev,
+      rate: [...prev.rate, { pricePerPax: '', maxPax: '', minPax: '' }]
+    }));
+  };
+
+  const removeRateItem = (index: number) => {
+    if (formData.rate.length > 1) {
+      setFormData(prev => ({
+        ...prev,
+        rate: prev.rate.filter((_, i) => i !== index)
+      }));
+    }
+  };
+
+  const updateRateItem = (index: number, field: 'pricePerPax' | 'maxPax' | 'minPax', value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      rate: prev.rate.map((item, i) => 
+        i === index ? { ...item, [field]: value } : item
+      )
     }));
   };
 
@@ -213,46 +244,90 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Price per Pax (IDR) *
+          {/* Dynamic Pricing Section */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Pricing Tiers *
               </label>
-              <input
-                type="number"
-                required
-                min="0"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.pricePerPax}
-                onChange={(e) => setFormData(prev => ({ ...prev, pricePerPax: e.target.value }))}
-              />
+              <button
+                type="button"
+                onClick={addRateItem}
+                className="px-3 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors"
+              >
+                + Add Pricing Tier
+              </button>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Min Pax *
-              </label>
-              <input
-                type="number"
-                required
-                min="1"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.minPax}
-                onChange={(e) => setFormData(prev => ({ ...prev, minPax: e.target.value }))}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Max Pax *
-              </label>
-              <input
-                type="number"
-                required
-                min="1"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.maxPax}
-                onChange={(e) => setFormData(prev => ({ ...prev, maxPax: e.target.value }))}
-              />
-            </div>
+            
+            {formData.rate.map((rate, index) => (
+              <div key={index} className="border border-gray-200 rounded-lg p-4 mb-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="text-sm font-medium text-gray-700">
+                    Pricing Tier {index + 1}
+                  </h4>
+                  {formData.rate.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeRateItem(index)}
+                      className="text-red-600 hover:text-red-800 text-sm"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">
+                      Price per Pax (IDR) *
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      min="0"
+                      placeholder="e.g., 500000"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={rate.pricePerPax}
+                      onChange={(e) => updateRateItem(index, 'pricePerPax', e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">
+                      Min Pax *
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      min="1"
+                      placeholder="e.g., 1"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={rate.minPax}
+                      onChange={(e) => updateRateItem(index, 'minPax', e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">
+                      Max Pax *
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      min="1"
+                      placeholder="e.g., 10"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={rate.maxPax}
+                      onChange={(e) => updateRateItem(index, 'maxPax', e.target.value)}
+                    />
+                  </div>
+                </div>
+                
+                {rate.minPax && rate.maxPax && (
+                  <div className="mt-2 text-xs text-gray-500">
+                    This pricing applies to groups of {rate.minPax}-{rate.maxPax} passengers
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
