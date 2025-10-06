@@ -38,6 +38,42 @@ interface TourPackageState {
   isEditModalOpen: boolean;
   isDeleteModalOpen: boolean;
   packageToDelete: number | null;
+  formData: FormData;
+}
+
+
+
+interface FormData {
+    title: string;
+    description: string;
+    destination: string;
+    duration: string;
+    rate: Rate[];
+    imageUrl: string;
+    terms: string;
+    available: boolean;
+    includes: string[];
+    excludes: string[];
+    itinerary: string[];
+}
+
+// Sample form data 
+const sampleFormData: FormData = {
+    title: '',
+    description: '',
+    destination: '',
+    duration: '',
+    rate: [{
+        pricePerPax: '',
+        maxPax: '',
+        minPax: ''
+    }],
+    imageUrl: '',
+    terms: '',
+    available: true,
+    includes: [''],
+    excludes: [''],
+    itinerary: ['']
 }
 
 // Sample tour package data for admin
@@ -130,6 +166,7 @@ const initialState: TourPackageState = {
   isEditModalOpen: false,
   isDeleteModalOpen: false,
   packageToDelete: null,
+  formData: sampleFormData,
 };
 
 // Helper function to filter packages

@@ -18,8 +18,9 @@ const AdminDashboard: React.FC = () => {
   const totalPackages = packages.length;
   const availablePackages = packages.filter(pkg => pkg.available).length;
   const unavailablePackages = totalPackages - availablePackages;
+  const pricePerPax = packages.length > 0 
   const averagePrice = packages.length > 0 
-    ? packages.reduce((sum, pkg) => sum + pkg.pricePerPax, 0) / packages.length 
+    ? packages.reduce((sum, pkg) => sum + 0, 0) / packages.length 
     : 0;
 
   const formatPrice = (price: number) => {
