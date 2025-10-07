@@ -283,6 +283,10 @@ const tourPackageSlice = createSlice({
       };
       state.packages.push(newPackage);
       filterPackages(state);
+
+
+      console.log('Created new package:', newPackage);
+      
     },
 
     updateTourPackage: (state, action: PayloadAction<TourPackage>) => {
