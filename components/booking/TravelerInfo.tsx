@@ -10,32 +10,31 @@ export default function TravelerInfo({
     adultQty,
     childQty,
     infQty,
-    setAdultQty,
-    setChildQty,
-    setInfQty,
     totalForm, 
-    setTotalForm,
     formData,
-    onChange,
+    travelers,
+    handleTravelerChange,
 }:{
-    handleDecrement: any
-    handleInputChange: any
-    handleIncrement: any
+    handleDecrement: (type: 'adult' | 'child' | 'inf') => void
+    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>, type: 'adult' | 'child' | 'inf') => void
+    handleIncrement: (type: 'adult' | 'child' | 'inf') => void
     adultQty: number
     childQty: number
     infQty: number
-    setAdultQty: any
-    setChildQty: any
-    setInfQty: any
     totalForm: number
-    setTotalForm: any
     formData: {
         travelerName: string
         passportNo: string
         email: string
         dateOfBirth: Date
     }
-    onChange: (field: string, value: any) => void
+    travelers: Array<{
+        travelerName: string
+        passportNo: string
+        email: string
+        dateOfBirth: string
+    }>
+    handleTravelerChange: (index: number, field: string, value: any) => void
 }) {
 
 
@@ -65,8 +64,13 @@ export default function TravelerInfo({
                     <Ticket 
                         travelerNo={i+1}
                         paxType={paxTypes[i]}
-                        onChange={onChange}
-                        formData={formData}
+                        onChange={(field: string, value: any) => handleTravelerChange(i, field, value)}
+                        formData={travelers[i] ? {
+                            travelerName: travelers[i].travelerName,
+                            passportNo: travelers[i].passportNo,
+                            email: travelers[i].email,
+                            dateOfBirth: new Date(travelers[i].dateOfBirth || new Date())
+                        } : formData}
                     />
                 </div>
             ));
@@ -90,10 +94,6 @@ export default function TravelerInfo({
                     handleDecrement={handleDecrement}
                     handleIncrement={handleIncrement}
                     handleInputChange={handleInputChange}
-                    setAdultQty={setAdultQty}
-                    setChildQty={setChildQty}
-                    setInfQty={setInfQty}
-                    onClickSetForm={() => setTotalForm(adultQty + childQty + infQty)}
                 />
             </div>
 

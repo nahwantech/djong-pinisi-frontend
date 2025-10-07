@@ -19,21 +19,13 @@ export default function TotalPax({
     adultQty,
     childQty,
     infQty,
-    setAdultQty,
-    setChildQty,
-    setInfQty,
-    onClickSetForm,
 }:{
-    handleDecrement: any,
-    handleInputChange: any,
-    handleIncrement: any,
-    adultQty: Number,
-    childQty: Number,
-    infQty: Number,
-    setAdultQty: any,
-    setChildQty: any,
-    setInfQty: any,
-    onClickSetForm: any,
+    handleDecrement: (type: 'adult' | 'child' | 'inf') => void,
+    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>, type: 'adult' | 'child' | 'inf') => void,
+    handleIncrement: (type: 'adult' | 'child' | 'inf') => void,
+    adultQty: number,
+    childQty: number,
+    infQty: number,
 }) {
   const [selectedOptions, setSelectedOptions] = useState([]);
 
@@ -54,10 +46,10 @@ export default function TotalPax({
           </label>
           <div id="adultQty-input" className="relative flex items-center max-w-[8rem]">
             <BasicNumberInput 
-              handleDecrement={() => handleDecrement(adultQty, setAdultQty)}
+              handleDecrement={() => handleDecrement('adult')}
               quantity={adultQty}
-              handleInputChange={(e) => handleInputChange(e, setAdultQty)}
-              handleIncrement={() => handleIncrement(adultQty, setAdultQty)}
+              handleInputChange={(e) => handleInputChange(e, 'adult')}
+              handleIncrement={() => handleIncrement('adult')}
             />
           </div>
         </div>
@@ -70,10 +62,10 @@ export default function TotalPax({
           <div id="childQty-input" className="relative flex items-center max-w-[8rem]">
             
             <BasicNumberInput 
-              handleDecrement={() => handleDecrement(childQty, setChildQty)}
+              handleDecrement={() => handleDecrement('child')}
               quantity={childQty}
-              handleInputChange={(e) => handleInputChange(e, setChildQty)}
-              handleIncrement={() => handleIncrement(childQty, setChildQty)}
+              handleInputChange={(e) => handleInputChange(e, 'child')}
+              handleIncrement={() => handleIncrement('child')}
             />
           </div>
         </div>
@@ -85,10 +77,10 @@ export default function TotalPax({
           </label>
           <div id="infantQty-input"  className="relative flex items-center max-w-[8rem]">
             <BasicNumberInput 
-              handleDecrement={() => handleDecrement(infQty, setInfQty)}
+              handleDecrement={() => handleDecrement('inf')}
               quantity={infQty}
-              handleInputChange={(e) => handleInputChange(e, setInfQty)}
-              handleIncrement={() => handleIncrement(infQty, setInfQty)}
+              handleInputChange={(e) => handleInputChange(e, 'inf')}
+              handleIncrement={() => handleIncrement('inf')}
             />
           </div>
         </div>
@@ -111,7 +103,10 @@ export default function TotalPax({
           <div className='relative flex items-end max-w-[10rem]'>
             <PrimaryButton 
               ButtonDesc='Inquiry Package'
-              onClick={onClickSetForm}
+              onClick={() => {
+                // This button doesn't need to do anything since totalForm is auto-calculated in Redux
+                console.log('Inquiry Package clicked');
+              }}
             />
           </div>
         </div>

@@ -80,8 +80,8 @@ export default function Navbar() {
               <Link href="/product" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
                 <ProductLogoSvg className="h-4 w-4 mr-2" />Product
               </Link>
-              <Link href="/booking" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
-                <BookOpenLogoSvg className="h-6 w-6 mr-2" /> Booking
+              <Link href="/booking-list" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+                <BookOpenLogoSvg className="h-6 w-6 mr-2" /> Booking List
               </Link>
               <Link href="/report" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
                 <FileBarLogoSvg className="h-6 w-6 mr-2" /> Report
