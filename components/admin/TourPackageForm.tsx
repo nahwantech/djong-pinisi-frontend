@@ -1,13 +1,22 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/store';
 import { 
   createTourPackage, 
   updateTourPackage, 
   closeCreateModal, 
-  closeEditModal 
+  closeEditModal,
+  updateFormField,
+  addArrayItem,
+  removeArrayItem,
+  updateArrayItem,
+  addRateItem,
+  removeRateItem,
+  updateRateItem,
+  resetFormData,
+  initializeFormForEdit
 } from '@/store/features/tour-package/tourPackageSlice';
 import PrimaryButton from '../generals/btns/primary-button';
 
@@ -20,66 +29,20 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
   const { 
     isCreateModalOpen, 
     isEditModalOpen, 
-    selectedPackage 
+    selectedPackage,
+    formData,
   } = useSelector((state: RootState) => state.tourPackage);
 
   const isOpen = isEdit ? isEditModalOpen : isCreateModalOpen;
   const initialData = isEdit && selectedPackage ? selectedPackage : null;
 
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    destination: '',
-    duration: '',
-    rate: [{
-        pricePerPax: '',
-        maxPax: '',
-        minPax: ''
-    }],
-    imageUrl: '',
-    terms: '',
-    available: true,
-    includes: [''],
-    excludes: [''],
-    itinerary: ['']
-  });
-
   useEffect(() => {
     if (isEdit && initialData) {
-      setFormData({
-        title: initialData.title,
-        description: initialData.description,
-        destination: initialData.destination,
-        duration: initialData.duration,
-        rate: initialData.rate,
-        imageUrl: initialData.imageUrl,
-        terms: initialData.terms,
-        available: initialData.available,
-        includes: initialData.includes,
-        excludes: initialData.excludes,
-        itinerary: initialData.itinerary
-      });
-    } else {
-      // Reset form for create mode
-      setFormData({
-        title: '',
-        description: '',
-        destination: '',
-        duration: '',
-        rate: [{
-          pricePerPax: '',
-          maxPax: '',
-          minPax: ''
-        }],
-        imageUrl: '',
-        terms: '',
-        available: true,
-        includes: [''],
-        excludes: [''],
-        itinerary: ['']
-      });
+      dispatch(initializeFormForEdit(initialData));
+    } else if (!isEdit && isCreateModalOpen) {
+      dispatch(resetFormData());
     }
-  }, [isEdit, initialData, isOpen]);
+  }, [isEdit, initialData, isOpen, isCreateModalOpen, dispatch]);
 
   const handleClose = () => {
     if (isEdit) {
@@ -88,7 +51,6 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
       dispatch(closeCreateModal());
     }
   };
-  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -119,52 +81,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
     handleClose();
   };
 
-  const addArrayItem = (field: 'includes' | 'excludes' | 'itinerary') => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: [...prev[field], '']
-    }));
-  };
 
-  const removeArrayItem = (field: 'includes' | 'excludes' | 'itinerary', index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: prev[field].filter((_, i) => i !== index)
-    }));
-  };
-
-  const updateArrayItem = (field: 'includes' | 'excludes' | 'itinerary', index: number, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: prev[field].map((item, i) => i === index ? value : item)
-    }));
-  };
-
-  // Rate management functions
-  const addRateItem = () => {
-    setFormData(prev => ({
-      ...prev,
-      rate: [...prev.rate, { pricePerPax: '', maxPax: '', minPax: '' }]
-    }));
-  };
-
-  const removeRateItem = (index: number) => {
-    if (formData.rate.length > 1) {
-      setFormData(prev => ({
-        ...prev,
-        rate: prev.rate.filter((_, i) => i !== index)
-      }));
-    }
-  };
-
-  const updateRateItem = (index: number, field: 'pricePerPax' | 'maxPax' | 'minPax', value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      rate: prev.rate.map((item, i) => 
-        i === index ? { ...item, [field]: value } : item
-      )
-    }));
-  };
 
   if (!isOpen) return null;
 
@@ -200,7 +117,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={formData.title}
-                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                onChange={(e) => dispatch(updateFormField({ field: 'title', value: e.target.value }))}
               />
             </div>
             <div>
@@ -212,7 +129,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={formData.destination}
-                onChange={(e) => setFormData(prev => ({ ...prev, destination: e.target.value }))}
+                onChange={(e) => dispatch(updateFormField({ field: 'destination', value: e.target.value }))}
               />
             </div>
 
@@ -226,7 +143,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
                 placeholder="e.g., 5"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={formData.duration}
-                onChange={(e) => setFormData(prev => ({ ...prev, duration: e.target.value }))}
+                onChange={(e) => dispatch(updateFormField({ field: 'duration', value: e.target.value }))}
               />
             </div>
           </div>
@@ -240,7 +157,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={formData.description}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              onChange={(e) => dispatch(updateFormField({ field: 'description', value: e.target.value }))}
             />
           </div>
 
@@ -252,7 +169,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
               </label>
               <button
                 type="button"
-                onClick={addRateItem}
+                onClick={() => dispatch(addRateItem())}
                 className="px-3 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors"
               >
                 + Add Pricing Tier
@@ -268,7 +185,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
                   {formData.rate.length > 1 && (
                     <button
                       type="button"
-                      onClick={() => removeRateItem(index)}
+                      onClick={() => dispatch(removeRateItem(index))}
                       className="text-red-600 hover:text-red-800 text-sm"
                     >
                       Remove
@@ -288,7 +205,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
                       placeholder="e.g., 500000"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       value={rate.pricePerPax}
-                      onChange={(e) => updateRateItem(index, 'pricePerPax', e.target.value)}
+                      onChange={(e) => dispatch(updateRateItem({ index, field: 'pricePerPax', value: e.target.value }))}
                     />
                   </div>
                   <div>
@@ -302,7 +219,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
                       placeholder="e.g., 1"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       value={rate.minPax}
-                      onChange={(e) => updateRateItem(index, 'minPax', e.target.value)}
+                      onChange={(e) => dispatch(updateRateItem({ index, field: 'minPax', value: e.target.value }))}
                     />
                   </div>
                   <div>
@@ -316,7 +233,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
                       placeholder="e.g., 10"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       value={rate.maxPax}
-                      onChange={(e) => updateRateItem(index, 'maxPax', e.target.value)}
+                      onChange={(e) => dispatch(updateRateItem({ index, field: 'maxPax', value: e.target.value }))}
                     />
                   </div>
                 </div>
@@ -341,7 +258,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={formData.imageUrl}
-                onChange={(e) => setFormData(prev => ({ ...prev, imageUrl: e.target.value }))}
+                onChange={(e) => dispatch(updateFormField({ field: 'imageUrl', value: e.target.value }))}
               />
             </div>
           </div>
@@ -354,7 +271,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
               rows={2}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={formData.terms}
-              onChange={(e) => setFormData(prev => ({ ...prev, terms: e.target.value }))}
+              onChange={(e) => dispatch(updateFormField({ field: 'terms', value: e.target.value }))}
             />
           </div>
 
@@ -364,7 +281,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
               id="available"
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               checked={formData.available}
-              onChange={(e) => setFormData(prev => ({ ...prev, available: e.target.checked }))}
+              onChange={(e) => dispatch(updateFormField({ field: 'available', value: e.target.checked }))}
             />
             <label htmlFor="available" className="ml-2 block text-sm text-gray-900">
               Package is available for booking
@@ -381,7 +298,7 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
                 </label>
                 <button
                   type="button"
-                  onClick={() => addArrayItem(field)}
+                  onClick={() => dispatch(addArrayItem(field))}
                   className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                 >
                   + Add Item
@@ -394,13 +311,13 @@ const TourPackageForm: React.FC<TourPackageFormProps> = ({ isEdit = false }) => 
                       type="text"
                       className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       value={item}
-                      onChange={(e) => updateArrayItem(field, index, e.target.value)}
+                      onChange={(e) => dispatch(updateArrayItem({ field, index, value: e.target.value }))}
                       placeholder={`${field === 'itinerary' ? 'Day ' + (index + 1) + ': ' : ''}Enter item...`}
                     />
                     {formData[field].length > 1 && (
                       <button
                         type="button"
-                        onClick={() => removeArrayItem(field, index)}
+                        onClick={() => dispatch(removeArrayItem({ field, index }))}
                         className="px-3 py-2 text-red-600 hover:text-red-800"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

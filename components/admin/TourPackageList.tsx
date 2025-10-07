@@ -11,7 +11,6 @@ import {
   openEditModal,
   openDeleteModal
 } from '@/store/features/tour-package/tourPackageSlice';
-import { TourPackage } from '@/store/features/tour-package/tourPackageSlice';
 import PrimaryButton from '../generals/btns/primary-button';
 
 const TourPackageList: React.FC = () => {
@@ -23,25 +22,6 @@ const TourPackageList: React.FC = () => {
     isLoading 
   } = useSelector((state: RootState) => state.tourPackage);
 
-  const handleSearch = (query: string) => {
-    dispatch(setSearchQuery(query));
-  };
-
-  const handleFilterChange = (status: 'all' | 'available' | 'unavailable') => {
-    dispatch(setFilterStatus(status));
-  };
-
-  const handleToggleAvailability = (id: number) => {
-    dispatch(togglePackageAvailability(id));
-  };
-
-  const handleEdit = (package_: TourPackage) => {
-    dispatch(openEditModal(package_));
-  };
-
-  const handleDelete = (id: number) => {
-    dispatch(openDeleteModal(id));
-  };
 
   const formatPrice = (price: string) => {
     return new Intl.NumberFormat('id-ID', {
@@ -82,15 +62,6 @@ const TourPackageList: React.FC = () => {
             <h2 className="text-xl font-bold text-gray-900">Tour Package Management</h2>
             <p className="text-gray-600">Manage your tour packages and settings</p>
           </div>
-          {/* <button
-            onClick={() => dispatch(openCreateModal())}
-            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
-            </svg>
-            Add New Package
-          </button> */}
           <div
             className='inline-flex items-center'
           >
@@ -114,7 +85,7 @@ const TourPackageList: React.FC = () => {
               placeholder="Search by title, destination, or description..."
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
+              onChange={(e) => dispatch(setSearchQuery(e.target.value))}
             />
           </div>
           <div className="lg:w-48">
@@ -124,7 +95,7 @@ const TourPackageList: React.FC = () => {
             <select
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={filterStatus}
-              onChange={(e) => handleFilterChange(e.target.value as 'all' | 'available' | 'unavailable')}
+              onChange={(e) => dispatch(setFilterStatus(e.target.value as 'all' | 'available' | 'unavailable'))}
             >
               <option value="all">All Packages</option>
               <option value="available">Available</option>
@@ -197,7 +168,7 @@ const TourPackageList: React.FC = () => {
                   {/* Action Buttons */}
                   <div className="flex gap-2">
                     <button
-                      onClick={() => handleToggleAvailability(package_.id)}
+                      onClick={() => dispatch(togglePackageAvailability(package_.id))}
                       className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                         package_.available
                           ? 'bg-red-100 text-red-700 hover:bg-red-200'
@@ -207,7 +178,7 @@ const TourPackageList: React.FC = () => {
                       {package_.available ? 'Disable' : 'Enable'}
                     </button>
                     <button
-                      onClick={() => handleEdit(package_)}
+                      onClick={() => dispatch(openEditModal(package_))}
                       className="px-3 py-2 text-sm font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200 transition-colors"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -215,7 +186,7 @@ const TourPackageList: React.FC = () => {
                       </svg>
                     </button>
                     <button
-                      onClick={() => handleDelete(package_.id)}
+                      onClick={() => dispatch(openDeleteModal(package_.id))}
                       className="px-3 py-2 text-sm font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 transition-colors"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

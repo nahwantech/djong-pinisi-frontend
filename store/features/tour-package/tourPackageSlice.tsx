@@ -196,6 +196,72 @@ const tourPackageSlice = createSlice({
   name: 'tourPackage',
   initialState,
   reducers: {
+
+    // Form data management actions
+    setFormData: (state, action: PayloadAction<FormData>) => {
+        state.formData = action.payload;
+    },
+
+    resetFormData: (state) => {
+        state.formData = sampleFormData;
+    },
+
+    updateFormField: (state, action: PayloadAction<{field: keyof FormData, value: any}>) => {
+        const { field, value } = action.payload;
+        (state.formData as any)[field] = value;
+    },
+
+    // Array field management
+    addArrayItem: (state, action: PayloadAction<'includes' | 'excludes' | 'itinerary'>) => {
+        const field = action.payload;
+        state.formData[field].push('');
+    },
+
+    removeArrayItem: (state, action: PayloadAction<{field: 'includes' | 'excludes' | 'itinerary', index: number}>) => {
+        const { field, index } = action.payload;
+        state.formData[field].splice(index, 1);
+    },
+
+    updateArrayItem: (state, action: PayloadAction<{field: 'includes' | 'excludes' | 'itinerary', index: number, value: string}>) => {
+        const { field, index, value } = action.payload;
+        state.formData[field][index] = value;
+    },
+
+    // Rate management
+    addRateItem: (state) => {
+        state.formData.rate.push({ pricePerPax: '', maxPax: '', minPax: '' });
+    },
+
+    removeRateItem: (state, action: PayloadAction<number>) => {
+        const index = action.payload;
+        if (state.formData.rate.length > 1) {
+            state.formData.rate.splice(index, 1);
+        }
+    },
+
+    updateRateItem: (state, action: PayloadAction<{index: number, field: 'pricePerPax' | 'maxPax' | 'minPax', value: string}>) => {
+        const { index, field, value } = action.payload;
+        state.formData.rate[index][field] = value;
+    },
+
+    // Initialize form data for edit mode
+    initializeFormForEdit: (state, action: PayloadAction<TourPackage>) => {
+        const packageData = action.payload;
+        state.formData = {
+            title: packageData.title,
+            description: packageData.description,
+            destination: packageData.destination,
+            duration: packageData.duration,
+            rate: packageData.rate,
+            imageUrl: packageData.imageUrl,
+            terms: packageData.terms,
+            available: packageData.available,
+            includes: packageData.includes,
+            excludes: packageData.excludes,
+            itinerary: packageData.itinerary
+        };
+    },
+
     // Search and Filter actions
     setSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
@@ -305,6 +371,16 @@ export const {
   closeDeleteModal,
   setLoading,
   setError,
+  setFormData,
+  resetFormData,
+  updateFormField,
+  addArrayItem,
+  removeArrayItem,
+  updateArrayItem,
+  addRateItem,
+  removeRateItem,
+  updateRateItem,
+  initializeFormForEdit,
 } = tourPackageSlice.actions;
 
 export default tourPackageSlice.reducer;
