@@ -13,7 +13,7 @@ export interface FormData {
   travelerName: string;
   passportNo: string;
   email: string;
-  dateOfBirth: Date;
+  dateOfBirth: string;
 }
 
 // Define booking state
@@ -37,7 +37,7 @@ const initialState: BookingState = {
     travelerName: '',
     passportNo: '',
     email: '',
-    dateOfBirth: new Date(),
+    dateOfBirth: '',
   },
 };
 
@@ -154,7 +154,7 @@ const bookingSlice = createSlice({
         travelerName: '',
         passportNo: '',
         email: '',
-        dateOfBirth: new Date(),
+        dateOfBirth: '',
       };
     },
 
@@ -169,7 +169,7 @@ const bookingSlice = createSlice({
         travelerName: '',
         passportNo: '',
         email: '',
-        dateOfBirth: new Date(),
+        dateOfBirth: '',
       };
     },
   },

@@ -26,7 +26,7 @@ export default function TravelerInfo({
         travelerName: string
         passportNo: string
         email: string
-        dateOfBirth: Date
+        dateOfBirth: string
     }
     travelers: Array<{
         travelerName: string
@@ -69,7 +69,7 @@ export default function TravelerInfo({
                             travelerName: travelers[i].travelerName,
                             passportNo: travelers[i].passportNo,
                             email: travelers[i].email,
-                            dateOfBirth: new Date(travelers[i].dateOfBirth || new Date())
+                            dateOfBirth: travelers[i].dateOfBirth || ''
                         } : formData}
                     />
                 </div>

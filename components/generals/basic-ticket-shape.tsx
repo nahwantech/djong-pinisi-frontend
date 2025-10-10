@@ -14,7 +14,7 @@ export default function Ticket({
     travelerName: string
     passportNo: string
     email: string
-    dateOfBirth: Date
+    dateOfBirth: string
   }
   onChange: (field: string, value: any) => void
 }) {
@@ -82,7 +82,7 @@ export default function Ticket({
               </label>
               <Datepicker 
                 id="dateOfBirth"
-                value={formData.dateOfBirth}
+                value={formData.dateOfBirth ? new Date(formData.dateOfBirth) : new Date()}
                 onChange={(date: Date) =>
                   onChange('dateOfBirth', date.toISOString().split('T')[0])
                 }
