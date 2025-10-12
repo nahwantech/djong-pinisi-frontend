@@ -7,6 +7,7 @@ import { RootState } from '../../store/store';
 import {
   setCurrentPage,
   setSelectedPackage,
+  getLowestPrice,
 } from '../../store/features/product/productSlice';
 import Pagination from '../generals/Pagination';
 
@@ -35,7 +36,7 @@ export default function PackageTourList() {
                 imageUrl={pkg.imageUrl}
                 title={pkg.title}
                 description={pkg.description}
-                pricePerPax={pkg.pricePerPax}
+                rate={pkg.rate}
                 terms={pkg.terms}
                 available={pkg.available}
                 destination={pkg.destination}

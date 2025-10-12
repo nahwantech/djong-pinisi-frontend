@@ -2,11 +2,18 @@
 import { useState } from "react";
 import Image from "next/image";
 
+// Define rate interface
+interface Rate {
+  pricePerPax: string;
+  maxPax: string;
+  minPax: string;
+}
+
 interface PackageTourCardProps {
   imageUrl: string;
   title: string;
   description: string;
-  pricePerPax: number;
+  rate: Rate[];
   terms: string;
   available: boolean;
   destination: string;
@@ -17,13 +24,21 @@ export default function PackageTourCard({
   imageUrl,
   title,
   description,
-  pricePerPax,
+  rate,
   terms,
   available,
   destination,
   onClick,
 }: PackageTourCardProps) {
   const [showTerms, setShowTerms] = useState(false);
+
+  // Helper function to get the lowest price from rate array
+  const getLowestPrice = (rates: Rate[]) => {
+    if (!rates || rates.length === 0) return 0;
+    return Math.min(...rates.map(r => parseInt(r.pricePerPax)));
+  };
+
+  const lowestPrice = getLowestPrice(rate);
 
   return (
     <div 
@@ -52,10 +67,13 @@ export default function PackageTourCard({
 
         {/* Price */}
         <div className="mt-3">
-          <span className="text-lg font-bold text-blue-600">
-            IDR {pricePerPax.toLocaleString()}
-          </span>
-          <span className="text-gray-500"> / pax</span>
+          <span className="text-sm text-gray-500">Starting from</span>
+          <div>
+            <span className="text-lg font-bold text-blue-600">
+              IDR {lowestPrice.toLocaleString()}
+            </span>
+            <span className="text-gray-500"> / pax</span>
+          </div>
         </div>
 
         {/* Availability */}

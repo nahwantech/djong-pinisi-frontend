@@ -1,16 +1,52 @@
+// Define interfaces
+interface Rate {
+  pricePerPax: string;
+  maxPax: string;
+  minPax: string;
+}
+
+interface Package {
+  id: number;
+  imageUrl: string;
+  title: string;
+  description: string;
+  rate: Rate[];
+  terms: string;
+  available: boolean;
+  destination: string;
+  duration?: string;
+  includes?: string[];
+  excludes?: string[];
+  itinerary?: string[];
+}
+
 // Modal component for package details
 export default function PackageDetailModal({ pkg, onClose }: { 
-  pkg: any, 
+  pkg: Package, 
   onClose: () => void 
 }) {
+  // Helper function to get the lowest price from rate array
+  const getLowestPrice = (rates: Rate[]) => {
+    if (!rates || rates.length === 0) return 0;
+    return Math.min(...rates.map(r => parseInt(r.pricePerPax)));
+  };
+
+  const formatPrice = (price: string | number) => {
+    const numPrice = typeof price === 'string' ? parseInt(price) : price;
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+    }).format(numPrice);
+  };
   return (
-    <div className="fixed inset-0 shadow-lg flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto shadow-lg">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">{pkg.title}</h2>
+    <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-3xl font-bold text-gray-800">{pkg.title}</h2>
           <button 
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 text-xl"
+            className="text-gray-500 hover:text-gray-700 text-2xl font-bold w-8 h-8 flex items-center justify-center"
           >
             ×
           </button>
@@ -34,9 +70,30 @@ export default function PackageDetailModal({ pkg, onClose }: {
           </div>
           
           <div>
-            <h3 className="font-semibold text-gray-800">Price</h3>
-            <p className="text-2xl font-bold text-blue-600">
-              IDR {pkg.pricePerPax.toLocaleString()} / pax
+            <h3 className="font-semibold text-gray-800">Duration</h3>
+            <p>{pkg.duration || 'Contact for details'}</p>
+          </div>
+          
+          <div>
+            <h3 className="font-semibold text-gray-800">Pricing Tiers</h3>
+            <div className="space-y-2">
+              {pkg.rate && pkg.rate.length > 0 ? (
+                pkg.rate.map((tier, index) => (
+                  <div key={index} className="flex justify-between items-center bg-gray-50 p-3 rounded">
+                    <span className="text-sm">{tier.minPax} - {tier.maxPax} pax</span>
+                    <span className="font-semibold text-blue-600">
+                      {formatPrice(tier.pricePerPax)} / pax
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500">Contact for pricing</p>
+              )}
+            </div>
+            <p className="text-sm text-gray-500 mt-2">
+              Starting from: <span className="font-semibold text-blue-600">
+                {formatPrice(getLowestPrice(pkg.rate))} / pax
+              </span>
             </p>
           </div>
           
@@ -46,6 +103,44 @@ export default function PackageDetailModal({ pkg, onClose }: {
               {pkg.available ? "Available" : "Not Available"}
             </p>
           </div>
+
+          {/* Package Includes */}
+          {pkg.includes && pkg.includes.length > 0 && (
+            <div>
+              <h3 className="font-semibold text-gray-800">Package Includes</h3>
+              <ul className="list-disc list-inside space-y-1">
+                {pkg.includes.map((item, index) => (
+                  <li key={index} className="text-sm text-gray-600">{item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Package Excludes */}
+          {pkg.excludes && pkg.excludes.length > 0 && (
+            <div>
+              <h3 className="font-semibold text-gray-800">Package Excludes</h3>
+              <ul className="list-disc list-inside space-y-1">
+                {pkg.excludes.map((item, index) => (
+                  <li key={index} className="text-sm text-gray-600">{item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Itinerary */}
+          {pkg.itinerary && pkg.itinerary.length > 0 && (
+            <div>
+              <h3 className="font-semibold text-gray-800">Itinerary</h3>
+              <ul className="space-y-2">
+                {pkg.itinerary.map((day, index) => (
+                  <li key={index} className="text-sm text-gray-600 bg-gray-50 p-2 rounded">
+                    {day}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           
           <div>
             <h3 className="font-semibold text-gray-800">Terms & Conditions</h3>
