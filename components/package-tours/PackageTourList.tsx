@@ -7,7 +7,6 @@ import { RootState } from '../../store/store';
 import {
   setCurrentPage,
   setSelectedPackage,
-  getLowestPrice,
 } from '../../store/features/product/productSlice';
 import Pagination from '../generals/Pagination';
 
