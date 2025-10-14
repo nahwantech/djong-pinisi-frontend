@@ -25,6 +25,13 @@ interface Booking {
   id: string;
   bookingCode: string;
   tourPackage: string;
+  packageDetails: {
+    duration: string;
+    includes: string[];
+    excludes: string[];
+    itinerary: string[];
+    termsAndConditions: string[];
+  };
   picName: string;
   picEmail: string;
   picPhone: string;
@@ -47,6 +54,30 @@ const sampleBookings: Booking[] = [
     id: '1',
     bookingCode: 'DJP-2024-001',
     tourPackage: 'Bali Cultural Heritage Tour',
+    packageDetails: {
+      duration: '5 Days 4 Nights',
+      includes: ['Accommodation (4-star hotel)', 'Daily Breakfast', 'Private Transportation', 'English Speaking Guide', 'Entrance Fees to Attractions', 'Airport Transfer'],
+      excludes: ['International Flight Tickets', 'Travel Insurance', 'Lunch & Dinner', 'Personal Expenses', 'Tips for Driver & Guide', 'Visa Fees'],
+      itinerary: [
+        'Day 1: Arrival at Ngurah Rai Airport - Transfer to hotel - Ubud Village Tour - Traditional Market Visit',
+        'Day 2: Temple Hopping Tour - Tanah Lot Temple (sunset) - Uluwatu Temple - Kecak Dance Performance',
+        'Day 3: Tegallalang Rice Terrace - Art Villages (Mas, Celuk, Tohpati) - Monkey Forest Sanctuary',
+        'Day 4: Beach Day - Sanur Beach - Water Sports Activities - Beach Club Lunch (own expense)',
+        'Day 5: Last minute shopping - Joger Souvenir Shop - Transfer to airport for departure'
+      ],
+      termsAndConditions: [
+        'Full payment required 14 days before departure date',
+        'Cancellation 7-14 days before departure: 50% penalty applies',
+        'Cancellation less than 7 days before departure: 100% penalty applies',
+        'Travel insurance is highly recommended for international travelers',
+        'Passport must be valid for at least 6 months from travel date',
+        'Company is not responsible for delayed or cancelled flights',
+        'Weather conditions may affect certain activities',
+        'Vegetarian meal requests must be informed at least 3 days before departure',
+        'Children under 2 years old are considered as infant (FOC)',
+        'Additional charges apply for single room supplement'
+      ]
+    },
     picName: 'John Doe',
     picEmail: 'john@example.com',
     picPhone: '+62812345678',
@@ -76,6 +107,32 @@ const sampleBookings: Booking[] = [
     id: '2',
     bookingCode: 'DJP-2024-002',
     tourPackage: 'Japan Autumn Tour',
+    packageDetails: {
+      duration: '7 Days 6 Nights',
+      includes: ['Hotel Accommodation (4-star)', 'Daily Breakfast', 'JR Pass (7 days)', 'English Speaking Guide', 'Entrance Fees', 'Airport Transfer', 'Bullet Train Tickets'],
+      excludes: ['International Flight Tickets', 'Travel Insurance', 'Lunch & Dinner', 'Personal Shopping', 'Optional Activities', 'Tips', 'Visa Processing'],
+      itinerary: [
+        'Day 1: Arrival in Tokyo Narita - City Orientation - Tokyo Station Area',
+        'Day 2: Tokyo Sightseeing - Senso-ji Temple - Shibuya Crossing - Harajuku District - Tokyo Skytree',
+        'Day 3: Day trip to Mt. Fuji - Lake Kawaguchi - Chureito Pagoda - Oshino Hakkai',
+        'Day 4: Travel to Kyoto via Bullet Train - Fushimi Inari Shrine - Gion District',
+        'Day 5: Kyoto Cultural Experience - Kiyomizu Temple - Bamboo Forest - Golden Pavilion',
+        'Day 6: Osaka Castle - Dotonbori District - Kuromon Market - Nara Park (Optional)',
+        'Day 7: Last minute shopping - Departure from Kansai Airport'
+      ],
+      termsAndConditions: [
+        'Passport must be valid for minimum 6 months from departure date',
+        'JR Pass activation required upon arrival',
+        'Full payment required 21 days before departure',
+        'Cancellation 14-21 days: 25% penalty applies',
+        'Cancellation 7-14 days: 50% penalty applies',
+        'Cancellation less than 7 days: 100% penalty applies',
+        'Travel insurance mandatory for this package',
+        'Weather may affect Mt. Fuji visibility',
+        'Cherry blossom/autumn foliage viewing subject to seasonal conditions',
+        'Halal meal arrangements available upon request (additional cost applies)'
+      ]
+    },
     picName: 'Alice Smith',
     picEmail: 'alice@example.com',
     picPhone: '+62812345679',
@@ -102,6 +159,31 @@ const sampleBookings: Booking[] = [
     id: '3',
     bookingCode: 'DJP-2024-003',
     tourPackage: 'Thailand Adventure',
+    packageDetails: {
+      duration: '6 Days 5 Nights',
+      includes: ['Hotel Accommodation (4-star beachfront)', 'Daily Breakfast', 'Private Transportation', 'English Speaking Guide', 'Boat Tours', 'Airport Transfer', 'Speed Boat to Islands'],
+      excludes: ['International Flight Tickets', 'Travel Insurance', 'Lunch & Dinner', 'Personal Expenses', 'Spa Treatments', 'Alcoholic Beverages', 'Water Sports Equipment Rental'],
+      itinerary: [
+        'Day 1: Arrival in Bangkok - Grand Palace Tour - Wat Pho Temple - Chao Phraya River Cruise',
+        'Day 2: Floating Market Tour - Maeklong Railway Market - Wat Arun Temple - Traditional Thai Massage',
+        'Day 3: Fly to Phuket - Patong Beach - Beach Activities - Bangla Road Night Market',
+        'Day 4: Island Hopping Tour - James Bond Island - Canoeing in Phang Nga Bay',
+        'Day 5: Phi Phi Islands Excursion - Maya Beach - Snorkeling - Sunset Viewpoint',
+        'Day 6: Last minute shopping - Central Phuket Mall - Return flight to Bangkok - International Departure'
+      ],
+      termsAndConditions: [
+        'Valid passport required with minimum 6 months validity',
+        'Visa on arrival fee (if applicable) not included',
+        'Full payment required 10 days before departure',
+        'Cancellation policy: 48 hours advance notice required',
+        'No refund for no-show or late arrival',
+        'Weather conditions may affect boat tours',
+        'Life jacket mandatory during boat tours',
+        'Swimming at own risk - company not liable for accidents',
+        'Respect local customs and dress codes at temples',
+        'Thai Baht currency recommended for local purchases'
+      ]
+    },
     picName: 'Mike Johnson',
     picEmail: 'mike@example.com',
     picPhone: '+62812345680',
@@ -135,6 +217,7 @@ export default function BookingListPage() {
   const [selectedStatus, setSelectedStatus] = useState<'all' | 'incoming' | 'on-progress' | 'closed'>('all');
   const [bookings, setBookings] = useState<Booking[]>(sampleBookings);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [expandedPackageDetails, setExpandedPackageDetails] = useState<string | null>(null);
 
   // Filter bookings by status
   const filteredBookings = bookings.filter(booking => 
@@ -294,6 +377,104 @@ export default function BookingListPage() {
                     ))}
                   </div>
                 </div>
+
+                {/* Package Details Toggle */}
+                <div className="mt-4">
+                  <button
+                    onClick={() => setExpandedPackageDetails(
+                      expandedPackageDetails === booking.id ? null : booking.id
+                    )}
+                    className="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center space-x-1"
+                  >
+                    <span>Package Details</span>
+                    <svg 
+                      className={`w-4 h-4 transform transition-transform ${
+                        expandedPackageDetails === booking.id ? 'rotate-180' : ''
+                      }`} 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  
+                  {expandedPackageDetails === booking.id && (
+                    <div className="mt-3 space-y-3 bg-gray-50 p-3 rounded-lg text-sm">
+                      {/* Duration */}
+                      <div>
+                        <p className="font-medium text-gray-700">Duration</p>
+                        <p className="text-gray-600">{booking.packageDetails.duration}</p>
+                      </div>
+
+                      {/* Package Includes */}
+                      <div>
+                        <p className="font-medium text-gray-700 mb-1">Package Includes</p>
+                        <div className="text-gray-600 space-y-1">
+                          {booking.packageDetails.includes.slice(0, 3).map((item, index) => (
+                            <div key={index} className="flex items-start">
+                              <span className="text-green-500 mr-2">✓</span>
+                              <span>{item}</span>
+                            </div>
+                          ))}
+                          {booking.packageDetails.includes.length > 3 && (
+                            <p className="text-gray-500 text-xs">
+                              +{booking.packageDetails.includes.length - 3} more items...
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Package Excludes */}
+                      <div>
+                        <p className="font-medium text-gray-700 mb-1">Package Excludes</p>
+                        <div className="text-gray-600 space-y-1">
+                          {booking.packageDetails.excludes.slice(0, 2).map((item, index) => (
+                            <div key={index} className="flex items-start">
+                              <span className="text-red-500 mr-2">✗</span>
+                              <span>{item}</span>
+                            </div>
+                          ))}
+                          {booking.packageDetails.excludes.length > 2 && (
+                            <p className="text-gray-500 text-xs">
+                              +{booking.packageDetails.excludes.length - 2} more items...
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Itinerary Preview */}
+                      <div>
+                        <p className="font-medium text-gray-700 mb-1">Itinerary Preview</p>
+                        <div className="text-gray-600 space-y-1">
+                          {booking.packageDetails.itinerary.slice(0, 2).map((day, index) => (
+                            <p key={index} className="text-xs">{day}</p>
+                          ))}
+                          {booking.packageDetails.itinerary.length > 2 && (
+                            <p className="text-gray-500 text-xs">
+                              +{booking.packageDetails.itinerary.length - 2} more days...
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Terms & Conditions Preview */}
+                      <div>
+                        <p className="font-medium text-gray-700 mb-1">Terms & Conditions</p>
+                        <div className="text-gray-600 space-y-1">
+                          {booking.packageDetails.termsAndConditions.slice(0, 2).map((term, index) => (
+                            <p key={index} className="text-xs">• {term}</p>
+                          ))}
+                          {booking.packageDetails.termsAndConditions.length > 2 && (
+                            <p className="text-gray-500 text-xs">
+                              +{booking.packageDetails.termsAndConditions.length - 2} more terms...
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Component Status */}
@@ -364,8 +545,8 @@ export default function BookingListPage() {
 
         {/* Booking Detail Modal */}
         {selectedBooking && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-lg">
               <div className="p-6 border-b border-gray-200">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold text-gray-900">Booking Details</h2>
@@ -402,6 +583,10 @@ export default function BookingListPage() {
                         <label className="block text-sm font-medium text-gray-700">Total Amount</label>
                         <p className="text-sm text-gray-900">{formatCurrency(selectedBooking.totalAmount)}</p>
                       </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Duration</label>
+                        <p className="text-sm text-gray-900">{selectedBooking.packageDetails.duration}</p>
+                      </div>
                     </div>
                   </div>
 
@@ -421,6 +606,65 @@ export default function BookingListPage() {
                         <label className="block text-sm font-medium text-gray-700">Phone</label>
                         <p className="text-sm text-gray-900">{selectedBooking.picPhone}</p>
                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Package Details Section */}
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold mb-4">Package Details</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Package Includes */}
+                    <div>
+                      <h4 className="font-medium text-gray-900 mb-3">Package Includes</h4>
+                      <div className="space-y-2">
+                        {selectedBooking.packageDetails.includes.map((item, index) => (
+                          <div key={index} className="flex items-start text-sm">
+                            <span className="text-green-500 mr-2 mt-0.5">✓</span>
+                            <span className="text-gray-700">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Package Excludes */}
+                    <div>
+                      <h4 className="font-medium text-gray-900 mb-3">Package Excludes</h4>
+                      <div className="space-y-2">
+                        {selectedBooking.packageDetails.excludes.map((item, index) => (
+                          <div key={index} className="flex items-start text-sm">
+                            <span className="text-red-500 mr-2 mt-0.5">✗</span>
+                            <span className="text-gray-700">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Itinerary Section */}
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold mb-4">Tour Itinerary</h3>
+                  <div className="space-y-3">
+                    {selectedBooking.packageDetails.itinerary.map((day, index) => (
+                      <div key={index} className="bg-gray-50 p-4 rounded-lg">
+                        <p className="text-sm text-gray-800">{day}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Terms and Conditions Section */}
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold mb-4">Terms & Conditions</h3>
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="space-y-2">
+                      {selectedBooking.packageDetails.termsAndConditions.map((term, index) => (
+                        <div key={index} className="flex items-start text-sm">
+                          <span className="text-blue-500 mr-2 mt-0.5">•</span>
+                          <span className="text-gray-700">{term}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
