@@ -6,15 +6,14 @@ import {
   setSelectedBooking,
   confirmComponent,
 } from '@/store/features/booking/bookingOperationsSlice';
+import { on } from 'events';
 
-export default function BookingDetailsModal() {
+export default function BookingDetailsModal({
+  booking,
+  onClose,
+}) {
   const dispatch = useDispatch();
-  const { selectedBooking } = useSelector((state: RootState) => state.bookingOperations);
-
-  // Don't render if no booking is selected
-  if (!selectedBooking) {
-    return null;
-  }
+  const selectedBooking = booking;
     
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -36,7 +35,7 @@ export default function BookingDetailsModal() {
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold text-gray-900">Booking Details</h2>
             <button
-              onClick={() => dispatch(setSelectedBooking(null))}
+              onClick={() => onClose()}
               className="text-gray-500 hover:text-gray-700"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
