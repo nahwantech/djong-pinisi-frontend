@@ -32,6 +32,7 @@ export default function PackageTourList() {
             {paginatedPackages.map((pkg) => (
               <PackageTourCard
                 key={pkg.id}
+                id={pkg.id}
                 imageUrl={pkg.imageUrl}
                 title={pkg.title}
                 description={pkg.description}

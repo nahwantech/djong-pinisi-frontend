@@ -1,7 +1,10 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 import Image from "next/image";
 import PrimaryButton from "../generals/btns/primary-button";
+import { setSelectedPackage } from "../../store/features/product/productSlice";
 
 // Define rate interface
 interface Rate {
@@ -19,6 +22,7 @@ interface PackageTourCardProps {
   available: boolean;
   destination: string;
   onClick?: () => void;
+  id: number;
 }
 
 export default function PackageTourCard({
@@ -30,8 +34,11 @@ export default function PackageTourCard({
   available,
   destination,
   onClick,
+  id,
 }: PackageTourCardProps) {
   const [showTerms, setShowTerms] = useState(false);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   // Helper function to get the lowest price from rate array
   const getLowestPrice = (rates: Rate[]) => {
@@ -40,6 +47,32 @@ export default function PackageTourCard({
   };
 
   const lowestPrice = getLowestPrice(rate);
+
+  const handleBookNow = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (available) {
+      // Set the selected package in the store
+      dispatch(setSelectedPackage({
+        id,
+        imageUrl,
+        title,
+        description,
+        rate,
+        terms,
+        available,
+        destination,
+        duration: '', // You might want to add this to props
+        includes: [], // You might want to add this to props
+        excludes: [], // You might want to add this to props
+        itinerary: [], // You might want to add this to props
+        createdAt: '',
+        updatedAt: ''
+      }));
+      
+      // Navigate to booking page
+      router.push('/product/book-now');
+    }
+  };
 
   return (
     <div 
@@ -106,7 +139,7 @@ export default function PackageTourCard({
         {/* Book Button */}
         <div className="mt-4 w-full px-4">
           <PrimaryButton
-            onClick={(e) => e.stopPropagation()}
+            onClick={handleBookNow}
             ButtonDesc={available ? "Book Now" : "Sold Out"}
             disable={!available}
           />

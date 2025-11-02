@@ -23,61 +23,154 @@ interface TravelerFormData {
 export default function BookNowPage() {
   const dispatch = useDispatch();
   const { adultQty, childQty, infQty, totalForm } = useSelector((state: RootState) => state.booking);
+  const { selectedPackage } = useSelector((state: RootState) => state.product);
   
   const [picName, setPicName] = useState('');
   const [totalPax, setTotalPax] = useState(0);
   const [travelers, setTravelers] = useState<TravelerFormData[]>([]);
+  const [validationError, setValidationError] = useState('');
 
-  // Handle quantity changes
+  // Get the applicable rate based on total pax
+  const getApplicableRate = () => {
+    if (!selectedPackage || !selectedPackage.rate) return null;
+    
+    return selectedPackage.rate.find(rate => {
+      const minPax = parseInt(rate.minPax);
+      const maxPax = parseInt(rate.maxPax);
+      return totalPax >= minPax && totalPax <= maxPax;
+    });
+  };
+
+  // Validate total pax against package rates
+  const validateTotalPax = (total: number) => {
+    if (!selectedPackage || !selectedPackage.rate) {
+      setValidationError('');
+      return true;
+    }
+
+    const applicableRate = selectedPackage.rate.find(rate => {
+      const minPax = parseInt(rate.minPax);
+      const maxPax = parseInt(rate.maxPax);
+      return total >= minPax && total <= maxPax;
+    });
+
+    if (!applicableRate && total > 0) {
+      const rates = selectedPackage.rate.map(rate => `${rate.minPax}-${rate.maxPax}`).join(', ');
+      setValidationError(`Total passengers must be within the allowed ranges: ${rates} pax`);
+      return false;
+    } else {
+      setValidationError('');
+      return true;
+    }
+  };
+
+  // Handle quantity changes with validation
   const handleDecrement = (type: 'adult' | 'child' | 'inf') => {
+    let newTotal = totalPax;
+    
     switch (type) {
       case 'adult':
-        if (adultQty > 0) dispatch(setAdultQty(adultQty - 1));
+        if (adultQty > 0) {
+          dispatch(setAdultQty(adultQty - 1));
+          newTotal = totalPax - 1;
+        }
         break;
       case 'child':
-        if (childQty > 0) dispatch(setChildQty(childQty - 1));
+        if (childQty > 0) {
+          dispatch(setChildQty(childQty - 1));
+          newTotal = totalPax - 1;
+        }
         break;
       case 'inf':
-        if (infQty > 0) dispatch(setInfQty(infQty - 1));
+        if (infQty > 0) {
+          dispatch(setInfQty(infQty - 1));
+          newTotal = totalPax - 1;
+        }
         break;
     }
-    updateTotalPax();
+    
+    // Update total and validate
+    setTimeout(() => updateTotalPax(), 0);
   };
 
   const handleIncrement = (type: 'adult' | 'child' | 'inf') => {
-    switch (type) {
-      case 'adult':
-        dispatch(setAdultQty(adultQty + 1));
-        break;
-      case 'child':
-        dispatch(setChildQty(childQty + 1));
-        break;
-      case 'inf':
-        dispatch(setInfQty(infQty + 1));
-        break;
+    // Check if increment would exceed any max pax limit
+    const newTotal = totalPax + 1;
+    let canIncrement = true;
+    
+    if (selectedPackage && selectedPackage.rate) {
+      const maxAllowedPax = Math.max(...selectedPackage.rate.map(rate => parseInt(rate.maxPax)));
+      if (newTotal > maxAllowedPax) {
+        canIncrement = false;
+      }
     }
-    updateTotalPax();
+    
+    if (canIncrement) {
+      switch (type) {
+        case 'adult':
+          dispatch(setAdultQty(adultQty + 1));
+          break;
+        case 'child':
+          dispatch(setChildQty(childQty + 1));
+          break;
+        case 'inf':
+          dispatch(setInfQty(infQty + 1));
+          break;
+      }
+      
+      // Update total and validate
+      setTimeout(() => updateTotalPax(), 0);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'adult' | 'child' | 'inf') => {
     const value = parseInt(e.target.value) || 0;
+    
+    // Calculate what the new total would be
+    let newTotal = totalPax;
     switch (type) {
       case 'adult':
-        dispatch(setAdultQty(value));
+        newTotal = value + childQty + infQty;
         break;
       case 'child':
-        dispatch(setChildQty(value));
+        newTotal = adultQty + value + infQty;
         break;
       case 'inf':
-        dispatch(setInfQty(value));
+        newTotal = adultQty + childQty + value;
         break;
     }
-    updateTotalPax();
+    
+    // Check if the new total would exceed max limits
+    let canUpdate = true;
+    if (selectedPackage && selectedPackage.rate) {
+      const maxAllowedPax = Math.max(...selectedPackage.rate.map(rate => parseInt(rate.maxPax)));
+      if (newTotal > maxAllowedPax) {
+        canUpdate = false;
+      }
+    }
+    
+    if (canUpdate) {
+      switch (type) {
+        case 'adult':
+          dispatch(setAdultQty(value));
+          break;
+        case 'child':
+          dispatch(setChildQty(value));
+          break;
+        case 'inf':
+          dispatch(setInfQty(value));
+          break;
+      }
+      
+      // Update total and validate
+      setTimeout(() => updateTotalPax(), 0);
+    }
   };
 
   const updateTotalPax = () => {
     const total = adultQty + childQty + infQty;
     setTotalPax(total);
+    validateTotalPax(total);
     
     // Update travelers array based on total pax
     const newTravelers = Array.from({ length: total }, (_, index) => 
@@ -120,7 +213,25 @@ export default function BookNowPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Book Now</h1>
-          <p className="text-gray-600">BALI 4 Days 3 Nights</p>
+          <p className="text-gray-600">
+            {selectedPackage ? selectedPackage.title : 'Package Tour'}
+          </p>
+          
+          {/* Package Pax Information */}
+          {selectedPackage && selectedPackage.rate && (
+            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <h3 className="text-lg font-semibold text-blue-900 mb-2">Package Information</h3>
+              <div className="space-y-1 text-blue-800">
+                <p className="font-medium">Available Passenger Ranges:</p>
+                {selectedPackage.rate.map((rate, index) => (
+                  <div key={index} className="flex justify-between">
+                    <span>{rate.minPax} - {rate.maxPax} passengers</span>
+                    <span className="font-medium">IDR {parseInt(rate.pricePerPax).toLocaleString()} per pax</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="space-y-6">
@@ -208,6 +319,25 @@ export default function BookNowPage() {
             <div className="text-lg font-semibold text-gray-900">
               Total Passengers: {totalPax}
             </div>
+            
+            {/* Validation Error */}
+            {validationError && (
+              <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-red-800 text-sm">{validationError}</p>
+              </div>
+            )}
+            
+            {/* Current Price Display */}
+            {totalPax > 0 && !validationError && getApplicableRate() && (
+              <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-md">
+                <p className="text-green-800 text-sm font-medium">
+                  Price: IDR {parseInt(getApplicableRate()!.pricePerPax).toLocaleString()} per person
+                </p>
+                <p className="text-green-700 text-sm">
+                  Total: IDR {(parseInt(getApplicableRate()!.pricePerPax) * totalPax).toLocaleString()}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Traveler Details Section */}
@@ -332,7 +462,7 @@ export default function BookNowPage() {
             <PrimaryButton
               ButtonDesc="Submit Booking"
               onClick={handleSubmit}
-              disable={totalPax === 0 || !picName}
+              disable={totalPax === 0 || !picName || !!validationError}
             />
           </div>
         </div>
