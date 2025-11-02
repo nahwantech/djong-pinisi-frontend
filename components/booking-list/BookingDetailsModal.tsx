@@ -1,17 +1,20 @@
 'use client';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@/store/store';
+import { useDispatch } from 'react-redux';
 import {
-  setSelectedBooking,
   confirmComponent,
+  Booking
 } from '@/store/features/booking/bookingOperationsSlice';
-import { on } from 'events';
+
+interface BookingDetailsModalProps {
+  booking: Booking;
+  onClose: () => void;
+}
 
 export default function BookingDetailsModal({
   booking,
   onClose,
-}) {
+}: BookingDetailsModalProps) {
   const dispatch = useDispatch();
   const selectedBooking = booking;
     

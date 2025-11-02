@@ -2,7 +2,7 @@
 'use client'; // This directive is necessary for client-side interactivity in App Router
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import ProductLogoSvg from '../../public/assets/navbar/product-box.svg'; 
 import TrendingUpLogoSvg from '../../public/assets/navbar/trending-up.svg';
@@ -17,6 +17,7 @@ import { FaUserCircle, FaSignOutAlt, FaCog } from 'react-icons/fa'; // Example i
 
 export default function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Ref for detecting clicks outside
 
@@ -71,19 +72,19 @@ export default function Navbar() {
           {/* Center (Navigation Links) */}
           <div className="flex-grow flex justify-center"> {/* flex-grow to take available space */}
             <div className="flex space-x-4">
-              <Link href="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+              <Link href="/" className={`px-3 py-2 rounded-md text-sm font-medium flex items-center ${pathname === '/' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}>
                 <TrendingUpLogoSvg className="h-6 w-4 mr-2" /> Dashboard
               </Link>
-              <Link href="/sales-pipeline" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+              <Link href="/sales-pipeline" className={`px-3 py-2 rounded-md text-sm font-medium flex items-center ${pathname === '/sales-pipeline' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}>
                 <BookOpenLogoSvg className="h-6 w-6 mr-2" /> Sales Pipeline
               </Link>
-              <Link href="/product" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+              <Link href="/product" className={`px-3 py-2 rounded-md text-sm font-medium flex items-center ${pathname === '/product' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}>
                 <ProductLogoSvg className="h-4 w-4 mr-2" />Product
               </Link>
-              <Link href="/booking-list" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+              <Link href="/booking-list" className={`px-3 py-2 rounded-md text-sm font-medium flex items-center ${pathname === '/booking-list' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}>
                 <BookOpenLogoSvg className="h-6 w-6 mr-2" /> Booking List
               </Link>
-              <Link href="/report" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 flex items-center">
+              <Link href="/report" className={`px-3 py-2 rounded-md text-sm font-medium flex items-center ${pathname === '/report' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}>
                 <FileBarLogoSvg className="h-6 w-6 mr-2" /> Report
               </Link>
             </div>

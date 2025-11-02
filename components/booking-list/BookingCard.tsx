@@ -1,5 +1,17 @@
 'use client';
 
+import { Booking } from '@/store/features/booking/bookingOperationsSlice';
+import PrimaryButton from '../generals/btns/primary-button';
+
+interface BookingCardProps {
+  booking: Booking;
+  getStatusColor: (status: string) => string;
+  formatCurrency: (amount: number) => string;
+  handleConfirmComponent: (bookingId: string, componentId: string) => void;
+  setSelectedBooking: (booking: Booking) => void;
+  expandedPackageDetails: string | null;
+  setExpandedPackageDetails: (id: string | null) => void;
+}
 
 export default function BookingCard({
     booking,
@@ -9,7 +21,7 @@ export default function BookingCard({
     setSelectedBooking,
     expandedPackageDetails,
     setExpandedPackageDetails,
-}) {
+}: BookingCardProps) {
 
     return(
         <div key={booking.id} className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
@@ -217,9 +229,15 @@ export default function BookingCard({
                     View Details
                   </button>
                   {booking.status !== 'closed' && (
-                    <button className="flex-1 bg-blue-500 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors">
-                      Update Status
-                    </button>
+                    // <button className="flex-1 bg-blue-500 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors">
+                    //   Update Status
+                    // </button>
+                    <div className='flex-1 w-full'>
+                      <PrimaryButton
+                        onClick={() => console.log('Update Status')}
+                        ButtonDesc="Update Status"
+                      />
+                    </div>
                   )}
                 </div>
               </div>

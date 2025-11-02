@@ -6,6 +6,8 @@ export interface Traveler {
   passportNo: string;
   email: string;
   dateOfBirth: string;
+  citizen: string;
+  ktpNo: string;
 }
 
 // Define form data type
@@ -14,6 +16,8 @@ export interface FormData {
   passportNo: string;
   email: string;
   dateOfBirth: string;
+  citizen: string;
+  ktpNo: string;
 }
 
 // Define booking state
@@ -38,6 +42,8 @@ const initialState: BookingState = {
     passportNo: '',
     email: '',
     dateOfBirth: '',
+    citizen: '',
+    ktpNo: '',
   },
 };
 
@@ -53,6 +59,8 @@ const updateTravelersArray = (state: BookingState) => {
       passportNo: '',
       email: '',
       dateOfBirth: '',
+      citizen: '',
+      ktpNo: '',
     }));
     state.travelers = [...state.travelers, ...newTravelers];
   } else if (targetLength < currentLength) {
@@ -143,6 +151,13 @@ const bookingSlice = createSlice({
       }
     },
 
+    updateTravelerData: (state, action: PayloadAction<{ index: number; field: keyof Traveler; value: any }>) => {
+      const { index, field, value } = action.payload;
+      if (index >= 0 && index < state.travelers.length) {
+        state.travelers[index][field] = value;
+      }
+    },
+
     // Form data management
     updateFormData: (state, action: PayloadAction<{ field: keyof FormData; value: any }>) => {
       const { field, value } = action.payload;
@@ -155,6 +170,8 @@ const bookingSlice = createSlice({
         passportNo: '',
         email: '',
         dateOfBirth: '',
+        citizen: '',
+        ktpNo: '',
       };
     },
 
@@ -170,6 +187,8 @@ const bookingSlice = createSlice({
         passportNo: '',
         email: '',
         dateOfBirth: '',
+        citizen: '',
+        ktpNo: '',
       };
     },
   },
@@ -186,6 +205,7 @@ export const {
   decrementInf,
   setInfQty,
   updateTraveler,
+  updateTravelerData,
   updateFormData,
   resetFormData,
   resetBooking,

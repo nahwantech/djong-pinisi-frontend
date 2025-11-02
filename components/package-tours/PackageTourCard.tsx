@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import PrimaryButton from "../generals/btns/primary-button";
 
 // Define rate interface
 interface Rate {
@@ -103,15 +104,15 @@ export default function PackageTourCard({
         )}
 
         {/* Book Button */}
-        <button
-          disabled={!available}
-          onClick={(e) => e.stopPropagation()}
-          className={`mt-4 w-full py-2 px-4 rounded-lg text-white font-semibold ${
-            available ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"
-          }`}
-        >
-          {available ? "Book Now" : "Sold Out"}
-        </button>
+        <div className="mt-4 w-full px-4">
+          <PrimaryButton
+            onClick={(e) => e.stopPropagation()}
+            ButtonDesc={available ? "Book Now" : "Sold Out"}
+            disable={!available}
+          />
+        </div>
+        
+        
       </div>
     </div>
   );
