@@ -69,8 +69,8 @@ const updateTravelersArray = (state: BookingState) => {
   }
 };
 
-const bookingSlice = createSlice({
-  name: 'booking',
+const bookingListSlice = createSlice({
+  name: 'booking-list',
   initialState,
   reducers: {
     // Quantity management actions
@@ -209,6 +209,6 @@ export const {
   updateFormData,
   resetFormData,
   resetBooking,
-} = bookingSlice.actions;
+} = bookingListSlice.actions;
 
-export default bookingSlice.reducer;
+export default bookingListSlice.reducer;

@@ -2,8 +2,9 @@ import { configureStore } from '@reduxjs/toolkit';
 import salesPipelineReducer from './features/sales-pipeline/salesPipelineSlice';
 import productReducer from './features/product/productSlice';
 import tourPackageReducer from './features/tour-package/tourPackageSlice';
-import bookingReducer from './features/booking/bookingSlice';
-import bookingOperationsReducer from './features/booking/bookingOperationsSlice';
+import bookingReducer from './features/booking-list/bookingListSlice';
+import bookingOperationsReducer from './features/booking-list/bookingListOperationsSlice';
+import bookingNowReducer from './features/booking-now/bookingNowSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     tourPackage: tourPackageReducer,
     booking: bookingReducer,
     bookingOperations: bookingOperationsReducer,
+    bookingNow: bookingNowReducer,
   },
 });
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { Booking } from '@/store/features/booking/bookingOperationsSlice';
+import { Booking } from '@/store/features/booking-list/bookingListOperationsSlice';
 import PrimaryButton from '../generals/btns/primary-button';
 
 interface BookingCardProps {

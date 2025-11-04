@@ -1,96 +1,65 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { 
   setAdultQty,
   setChildQty,
   setInfQty,
-  updateTravelerData
-} from '../../../store/features/booking/bookingSlice';
+  setPicName,
+  updateTraveler,
+  validateAndSetRate,
+  setSubmitting,
+  incrementAdult,
+  decrementAdult,
+  incrementChild,
+  decrementChild,
+  incrementInf,
+  decrementInf,
+  BookingNowTraveler,
+} from '../../../store/features/booking-now/bookingNowSlice';
 import PrimaryButton from '@/components/generals/btns/primary-button';
 import BasicNumberInput from '@/components/generals/basic-number-input';
 
-interface TravelerFormData {
-  travelerName: string;
-  dateOfBirth: string;
-  citizen: string;
-  passportNo: string;
-  ktpNo: string;
-}
-
 export default function BookNowPage() {
   const dispatch = useDispatch();
-  const { adultQty, childQty, infQty, totalForm } = useSelector((state: RootState) => state.booking);
-  const { selectedPackage } = useSelector((state: RootState) => state.product);
   
-  const [picName, setPicName] = useState('');
-  const [totalPax, setTotalPax] = useState(0);
-  const [travelers, setTravelers] = useState<TravelerFormData[]>([]);
-  const [validationError, setValidationError] = useState('');
-
-  // Get the applicable rate based on total pax
-  const getApplicableRate = () => {
-    if (!selectedPackage || !selectedPackage.rate) return null;
-    
-    return selectedPackage.rate.find(rate => {
-      const minPax = parseInt(rate.minPax);
-      const maxPax = parseInt(rate.maxPax);
-      return totalPax >= minPax && totalPax <= maxPax;
-    });
-  };
-
-  // Validate total pax against package rates
-  const validateTotalPax = (total: number) => {
-    if (!selectedPackage || !selectedPackage.rate) {
-      setValidationError('');
-      return true;
-    }
-
-    const applicableRate = selectedPackage.rate.find(rate => {
-      const minPax = parseInt(rate.minPax);
-      const maxPax = parseInt(rate.maxPax);
-      return total >= minPax && total <= maxPax;
-    });
-
-    if (!applicableRate && total > 0) {
-      const rates = selectedPackage.rate.map(rate => `${rate.minPax}-${rate.maxPax}`).join(', ');
-      setValidationError(`Total passengers must be within the allowed ranges: ${rates} pax`);
-      return false;
-    } else {
-      setValidationError('');
-      return true;
-    }
-  };
+  // Redux state
+  const { 
+    picName,
+    adultQty, 
+    childQty, 
+    infQty, 
+    totalPax,
+    travelers,
+    validationError,
+    applicableRate,
+    totalPrice,
+    isSubmitting
+  } = useSelector((state: RootState) => state.bookingNow);
+  
+  const { selectedPackage } = useSelector((state: RootState) => state.product);
 
   // Handle quantity changes with validation
   const handleDecrement = (type: 'adult' | 'child' | 'inf') => {
-    let newTotal = totalPax;
-    
     switch (type) {
       case 'adult':
         if (adultQty > 0) {
-          dispatch(setAdultQty(adultQty - 1));
-          newTotal = totalPax - 1;
+          dispatch(decrementAdult());
         }
         break;
       case 'child':
         if (childQty > 0) {
-          dispatch(setChildQty(childQty - 1));
-          newTotal = totalPax - 1;
+          dispatch(decrementChild());
         }
         break;
       case 'inf':
         if (infQty > 0) {
-          dispatch(setInfQty(infQty - 1));
-          newTotal = totalPax - 1;
+          dispatch(decrementInf());
         }
         break;
     }
-    
-    // Update total and validate
-    setTimeout(() => updateTotalPax(), 0);
   };
 
   const handleIncrement = (type: 'adult' | 'child' | 'inf') => {
@@ -108,18 +77,15 @@ export default function BookNowPage() {
     if (canIncrement) {
       switch (type) {
         case 'adult':
-          dispatch(setAdultQty(adultQty + 1));
+          dispatch(incrementAdult());
           break;
         case 'child':
-          dispatch(setChildQty(childQty + 1));
+          dispatch(incrementChild());
           break;
         case 'inf':
-          dispatch(setInfQty(infQty + 1));
+          dispatch(incrementInf());
           break;
       }
-      
-      // Update total and validate
-      setTimeout(() => updateTotalPax(), 0);
     }
   };
 
@@ -161,37 +127,20 @@ export default function BookNowPage() {
           dispatch(setInfQty(value));
           break;
       }
-      
-      // Update total and validate
-      setTimeout(() => updateTotalPax(), 0);
     }
   };
 
-  const updateTotalPax = () => {
-    const total = adultQty + childQty + infQty;
-    setTotalPax(total);
-    validateTotalPax(total);
-    
-    // Update travelers array based on total pax
-    const newTravelers = Array.from({ length: total }, (_, index) => 
-      travelers[index] || {
-        travelerName: '',
-        dateOfBirth: '',
-        citizen: '',
-        passportNo: '',
-        ktpNo: ''
-      }
-    );
-    setTravelers(newTravelers);
+  const handleTravelerChange = (index: number, field: keyof BookingNowTraveler, value: string) => {
+    dispatch(updateTraveler({ index, field, value }));
   };
 
-  const handleTravelerChange = (index: number, field: keyof TravelerFormData, value: string) => {
-    const updatedTravelers = [...travelers];
-    updatedTravelers[index] = { ...updatedTravelers[index], [field]: value };
-    setTravelers(updatedTravelers);
+  const handlePicNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setPicName(e.target.value));
   };
 
   const handleSubmit = () => {
+    dispatch(setSubmitting(true));
+    
     // Handle form submission logic here
     console.log({
       picName,
@@ -199,13 +148,24 @@ export default function BookNowPage() {
       adultQty,
       childQty,
       infQty,
-      travelers
+      travelers,
+      applicableRate,
+      totalPrice
     });
+    
+    // Simulate API call
+    setTimeout(() => {
+      dispatch(setSubmitting(false));
+      alert('Booking submitted successfully!');
+    }, 2000);
   };
 
+  // Validate and update rate when totalPax or selectedPackage changes
   React.useEffect(() => {
-    updateTotalPax();
-  }, [adultQty, childQty, infQty]);
+    dispatch(validateAndSetRate({ 
+      packageRates: selectedPackage?.rate || null 
+    }));
+  }, [totalPax, selectedPackage, dispatch]);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -252,7 +212,7 @@ export default function BookNowPage() {
                 type="text"
                 id="picName"
                 value={picName}
-                onChange={(e) => setPicName(e.target.value)}
+                onChange={handlePicNameChange}
                 className="w-full rounded-md border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
                 placeholder="Enter PIC name"
                 required
@@ -328,13 +288,13 @@ export default function BookNowPage() {
             )}
             
             {/* Current Price Display */}
-            {totalPax > 0 && !validationError && getApplicableRate() && (
+            {totalPax > 0 && !validationError && applicableRate && (
               <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-md">
                 <p className="text-green-800 text-sm font-medium">
-                  Price: IDR {parseInt(getApplicableRate()!.pricePerPax).toLocaleString()} per person
+                  Price: IDR {parseInt(applicableRate.pricePerPax).toLocaleString()} per person
                 </p>
                 <p className="text-green-700 text-sm">
-                  Total: IDR {(parseInt(getApplicableRate()!.pricePerPax) * totalPax).toLocaleString()}
+                  Total: IDR {totalPrice.toLocaleString()}
                 </p>
               </div>
             )}
@@ -354,7 +314,7 @@ export default function BookNowPage() {
                 {travelers.map((traveler, index) => (
                   <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
                     <h3 className="text-lg font-medium text-gray-900 mb-4">
-                      Passenger {index + 1}
+                      Passenger {index + 1} {`for ${traveler.type}`}
                     </h3>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -460,9 +420,9 @@ export default function BookNowPage() {
           {/* Submit Button */}
           <div className="flex justify-end">
             <PrimaryButton
-              ButtonDesc="Submit Booking"
+              ButtonDesc={isSubmitting ? "Submitting..." : "Submit Booking"}
               onClick={handleSubmit}
-              disable={totalPax === 0 || !picName || !!validationError}
+              disable={totalPax === 0 || !picName || !!validationError || isSubmitting}
             />
           </div>
         </div>

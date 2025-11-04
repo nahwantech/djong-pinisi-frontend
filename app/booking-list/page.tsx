@@ -10,7 +10,7 @@ import {
   setSelectedBooking,
   setExpandedPackageDetails,
   confirmComponent
-} from '../../store/features/booking/bookingOperationsSlice';
+} from '../../store/features/booking-list/bookingListOperationsSlice';
 
 export default function BookingListPage() {
   const dispatch = useDispatch();

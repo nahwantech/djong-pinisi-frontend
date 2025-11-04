@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
 import PrimaryButton from "../generals/btns/primary-button";
@@ -37,7 +36,6 @@ export default function PackageTourCard({
   id,
 }: PackageTourCardProps) {
   const [showTerms, setShowTerms] = useState(false);
-  const router = useRouter();
   const dispatch = useDispatch();
 
   // Helper function to get the lowest price from rate array
@@ -68,9 +66,6 @@ export default function PackageTourCard({
         createdAt: '',
         updatedAt: ''
       }));
-      
-      // Navigate to booking page
-      router.push('/product/book-now');
     }
   };
 

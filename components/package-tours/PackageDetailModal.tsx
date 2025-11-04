@@ -1,3 +1,8 @@
+'use client'
+
+import PrimaryButton from "../generals/btns/primary-button";
+import { useRouter } from "next/navigation";
+
 // Define interfaces
 interface Rate {
   pricePerPax: string;
@@ -25,6 +30,8 @@ export default function PackageDetailModal({ pkg, onClose }: {
   pkg: Package, 
   onClose: () => void 
 }) {
+  const router = useRouter();
+
   // Helper function to get the lowest price from rate array
   const getLowestPrice = (rates: Rate[]) => {
     if (!rates || rates.length === 0) return 0;
@@ -39,6 +46,13 @@ export default function PackageDetailModal({ pkg, onClose }: {
       minimumFractionDigits: 0,
     }).format(numPrice);
   };
+
+  const handleBookNow = () => {
+    if (pkg.available) {
+      router.push('/product/book-now');
+    }
+  }
+
   return (
     <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
@@ -147,13 +161,14 @@ export default function PackageDetailModal({ pkg, onClose }: {
             <p className="text-sm text-gray-600">{pkg.terms}</p>
           </div>
           
+
+          
           <div className="flex gap-4 mt-6">
-            <button 
-              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
-              disabled={!pkg.available}
-            >
-              {pkg.available ? "Book Now" : "Sold Out"}
-            </button>
+            <PrimaryButton
+              onClick={pkg.available ? handleBookNow : undefined}
+              ButtonDesc={pkg.available ? "Book Now" : "Sold Out"}
+              disable={!pkg.available}
+            />
             <button 
               onClick={onClose}
               className="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300"

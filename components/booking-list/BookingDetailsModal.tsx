@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import {
   confirmComponent,
   Booking
-} from '@/store/features/booking/bookingOperationsSlice';
+} from '@/store/features/booking-list/bookingListOperationsSlice';
 
 interface BookingDetailsModalProps {
   booking: Booking;
