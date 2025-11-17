@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SalesPipelineCardProps } from './SalesPipelineCard';
 import GeneralFunction from '../generals/gengeral-function';
 import PrimaryButton from '../generals/btns/primary-button';
+import TextAreaTooltip from '../generals/text-area/text-area-tooltip';
 
 interface SalesPipelineDetailModalProps {
   lead: SalesPipelineCardProps['lead'];
