@@ -4,7 +4,8 @@ import { useDispatch } from 'react-redux';
 import {
   confirmComponent,
   Booking
-} from '@/store/features/booking-list/bookingListOperationsSlice';
+} from '@/store/features/booking-operations/bookingOperationsSlice';
+
 
 interface BookingDetailsModalProps {
   booking: Booking;
@@ -15,7 +16,7 @@ export default function BookingDetailsModal({
   booking,
   onClose,
 }: BookingDetailsModalProps) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const selectedBooking = booking;
     
   const formatCurrency = (amount: number) => {

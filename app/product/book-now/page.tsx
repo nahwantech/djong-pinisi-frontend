@@ -21,6 +21,7 @@ import {
 } from '../../../store/features/booking-now/bookingNowSlice';
 import PrimaryButton from '@/components/generals/btns/primary-button';
 import BasicNumberInput from '@/components/generals/basic-number-input';
+import ProductBookedReview from '@/components/booking-now/ProductBookedReview';
 
 export default function BookNowPage() {
   const dispatch = useDispatch();
@@ -192,6 +193,12 @@ export default function BookNowPage() {
               </div>
             </div>
           )}
+        </div>
+
+        <div className="space-y-6 mb-6">
+          <ProductBookedReview
+
+          />
         </div>
 
         <div className="space-y-6">
@@ -420,7 +427,7 @@ export default function BookNowPage() {
           {/* Submit Button */}
           <div className="flex justify-end">
             <PrimaryButton
-              ButtonDesc={isSubmitting ? "Submitting..." : "Submit Booking"}
+              ButtonDesc={isSubmitting ? "Submitting..." : "Review Booking"}
               onClick={handleSubmit}
               disable={totalPax === 0 || !picName || !!validationError || isSubmitting}
             />
