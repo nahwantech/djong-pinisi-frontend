@@ -3,6 +3,7 @@ import { SalesPipelineCardProps } from './SalesPipelineCard';
 import GeneralFunction from '../generals/gengeral-function';
 import PrimaryButton from '../generals/btns/primary-button';
 import TextAreaTooltip from '../generals/text-area/text-area-tooltip';
+import BasicConfirmation from '../generals/confirmation/basic-confirmation';
 
 interface SalesPipelineDetailModalProps {
   lead: SalesPipelineCardProps['lead'];
@@ -18,15 +19,39 @@ const SalesPipelineDetailModal: React.FC<SalesPipelineDetailModalProps> = ({
   const gf = new GeneralFunction();
   const [comment, setComment] = useState('');
   const [stage, setStage] = useState(lead?.stage || '');
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [confirmText, setConfirmText] = useState({
+    title: '',
+    message: ''
+  });
   
   if (!lead) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (onSubmitStory) {
-      onSubmitStory({ comment, stage });
-      setComment('');
+    // if (onSubmitStory) {
+    //   onSubmitStory({ comment, stage });
+    //   setComment('');
+    // }
+    console.log('Submit clicked : ', stage);
+    
+    if (stage === 'Closed Won') {
+      setConfirmText({
+        title: 'Confirm Closing as Won',
+        message: 'Are you sure you want to close this lead as Won? You will redirect to booking now page...'
+      });
     }
+
+    if (stage !== 'Closed Won') {
+
+      setConfirmText({
+        title: 'Confirm Story Submission',
+        message: 'Are you sure you want to submit this story update?'
+      });
+      
+    }
+
+    setIsConfirmOpen(true);
   };
 
   const stageOptions = [
@@ -135,6 +160,23 @@ const SalesPipelineDetailModal: React.FC<SalesPipelineDetailModalProps> = ({
             Close
           </button>
         </div>
+
+        {/* Modal Confirm */}
+        {isConfirmOpen && (
+          <BasicConfirmation
+            title={confirmText.title}
+            message={confirmText.message}
+            onConfirm={() => {
+              if (onSubmitStory) {
+                onSubmitStory({ comment, stage });
+                setComment('');
+              }
+              setIsConfirmOpen(false);
+            }}
+            onCancel={() => setIsConfirmOpen(false)}
+          /> 
+        )}
+
       </div>
     </div>
   );
@@ -142,13 +184,3 @@ const SalesPipelineDetailModal: React.FC<SalesPipelineDetailModalProps> = ({
 
 export default SalesPipelineDetailModal;
 
-/* Usage Example */
-// <SalesPipelineDetailModal
-//   lead={lead}
-//   onClose={handleClose}
-//   onSubmitStory={(data) => {
-//     // Handle the story submission here
-//     console.log(data.comment, data.stage);
-//     // Make API call or update state as needed
-//   }}
-// />
