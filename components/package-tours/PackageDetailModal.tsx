@@ -2,6 +2,8 @@
 
 import PrimaryButton from "../generals/btns/primary-button";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import BasicConfirmation from "../generals/confirmation/basic-confirmation";
 
 // Define interfaces
 interface Rate {
@@ -30,6 +32,14 @@ export default function PackageDetailModal({ pkg, onClose }: {
   pkg: Package, 
   onClose: () => void 
 }) {
+
+  // confirmation
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [confirmText, setConfirmText] = useState({
+    title: 'Confirm Booking',
+    message: 'Is your booking from leads?'
+  });
+
   const router = useRouter();
 
   // Helper function to get the lowest price from rate array
@@ -165,7 +175,7 @@ export default function PackageDetailModal({ pkg, onClose }: {
           
           <div className="flex gap-4 mt-6">
             <PrimaryButton
-              onClick={pkg.available ? handleBookNow : undefined}
+              onClick={pkg.available ? () => setIsConfirmOpen(true) : undefined}
               ButtonDesc={pkg.available ? "Book Now" : "Sold Out"}
               disable={!pkg.available}
             />
@@ -176,6 +186,20 @@ export default function PackageDetailModal({ pkg, onClose }: {
               Close
             </button>
           </div>
+
+
+          {/* Modal Confirm */}
+          {isConfirmOpen && (
+            <BasicConfirmation
+              title={confirmText.title}
+              message={confirmText.message}
+              onConfirm={() => {
+                setIsConfirmOpen(false);
+                handleBookNow();
+              }}
+              onCancel={() => setIsConfirmOpen(false)}
+            />
+          )}
         </div>
       </div>
     </div>
